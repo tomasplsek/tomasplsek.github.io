@@ -1,0 +1,295 @@
+/* Minimal IDE-like theme */
+:root{
+  --bg:#0e1116; /* near-black */
+  --panel:#0b0e14; /* sidebar */
+  --panel-2:#11151c; /* editor bg darker */
+  --text:#e6edf3; /* foreground */
+  --muted:#8b949e;
+  --accent:#58a6ff;  /* blue */
+  --accent-2:#7ee787; /* green */
+  --accent-3:#ffa657; /* orange */
+  --border:#1f242d;
+  --profile-size:240px; /* photo size for layout calcs */
+  --toggle-size: 36px; /* desktop theme toggle button size */
+  /* Gaps above/below the window. JS updates outer gap from titlebar height. */
+  --top-gap: 44px;      /* legacy fallback */
+  --bottom-gap: 32px;   /* legacy fallback */
+  --outer-gap-scale: 0.80; /* desktop: slightly smaller outer gaps than before */
+  --outer-gap: calc(var(--top-gap) * var(--outer-gap-scale)); /* default until JS runs */
+}
+/* Light theme overrides */
+:root[data-theme="light"]{
+  --bg:#f6f8fa;
+  --panel:#ffffff;
+  --panel-2:#f6f8fa;
+  --text:#0b0e14;
+  --muted:#57606a;
+  --border:#d0d7de;
+}
+:root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#f8fafc,#e9eef4)}
+:root[data-theme="light"] .window-controls .btn:hover{background:#e9eef4;color:#24292f;border-color:#7d8590}
+:root[data-theme="light"] .tab:hover{background:#edf2f7}
+html,body{height:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font:14px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Ubuntu Mono", monospace;
+  height:auto; min-height:100vh; box-sizing:border-box; padding-block: var(--outer-gap);
+  /* Prevent layout shift when vertical scrollbar appears/disappears */
+  overflow-y: scroll; /* fallback, always reserve space */
+  scrollbar-gutter: stable; /* modern browsers */
+}
+
+.ide-window{display:flex;flex-direction:column;width:60vw;min-width:760px;max-width:1200px;margin:0 auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);overflow:hidden;box-sizing:border-box;background:var(--panel-2)}
+.titlebar{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.45rem .75rem .45rem .5rem; /* slightly smaller left indent */
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#0f131a,#0b0f14);
+}
+.titlebar .title{display:none} /* remove empty title spacer */
+/* When tabs are placed inside the titlebar */
+.titlebar .editor-header{display:flex;align-items:center;gap:.45rem;padding:0;margin:0;border:0;background:transparent;flex:0 1 auto;overflow:auto;max-width:100%}
+/* Classic tab look: no bottom border, top corners rounded */
+.titlebar .tab{position:relative;padding:.36rem .62rem .24rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;background:transparent;color:var(--muted)}
+.titlebar .tab:hover{background:#0f141c;color:var(--text)}
+/* Active tab: restore original inset underline at the bottom of the tab */
+.titlebar .tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
+
+/* Theme toggle button */
+.theme-toggle{position:fixed;top:8px;right:8px;z-index:1000;width:var(--toggle-size);height:var(--toggle-size);border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.theme-toggle svg{width:20px;height:20px}
+/* When placed inline with heading on mobile */
+.theme-toggle.in-heading{position:static;width:32px;height:32px}
+.title{color:var(--muted);font-size:.9rem}
+.title strong{color:var(--accent)}
+
+/* GNOME-like window controls on the right */
+.window-controls{margin-left:auto;display:flex;gap:.35rem}
+.window-controls .btn{width:28px;height:28px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.window-controls .btn:hover{background:#141a22;color:var(--text);border-color: var(--accent)}
+.window-controls .btn.close:hover{color:#ff7b7b;border-color:#ff7b7b}
+/* simple tooltip */
+.window-controls .btn[data-tip]:hover::after{
+  content: attr(data-tip);
+  position:absolute;bottom:-30px;right:0;white-space:nowrap;
+  background:#0b0f14;color:var(--text);border:1px solid var(--border);border-radius:6px;
+  padding:.2rem .4rem;font-size:.75rem;opacity:.95
+}
+
+/* window state classes */
+.ide-window.minimized .workspace,.ide-window.minimized .statusbar{display:none}
+/* Keep window size/position on minimize */
+.ide-window.maximized{width:calc(100vw - 4 * var(--toggle-size));max-width:calc(100vw - 4 * var(--toggle-size));margin:0 auto;box-shadow:0 16px 40px rgba(0,0,0,.55)}
+.ide-window.closed{display:none}
+.traffic{display:flex;gap:.35rem}
+.dot{width:.8rem;height:.8rem;border-radius:999px;display:inline-block;opacity:.9}
+.dot.red{background:#ff5f56}.dot.yellow{background:#ffbd2e}.dot.green{background:#27c93f}
+
+.workspace{display:block;min-height:0}
+.sidebar{
+  width:240px;background:var(--panel);
+  border-right:1px solid var(--border);padding:.75rem .5rem;overflow:auto
+}
+.section-title{font-size:.72rem;color:var(--muted);letter-spacing:.08em;margin:.2rem .5rem .4rem}
+.filetree{list-style:none;margin:0;padding:0}
+.filetree li{
+  cursor:pointer;padding:.35rem .5rem;border-radius:6px;display:flex;align-items:center;gap:.5rem;color:var(--text)
+}
+.filetree li:hover{background:rgba(88,166,255,.08)}
+.filetree li.active{background:linear-gradient(90deg, rgba(88,166,255,.18), rgba(126,231,135,.14));color:var(--accent)}
+.icon{opacity:.7}
+
+.editor{display:flex;flex-direction:column;min-width:0;background:var(--panel-2)}
+.editor-header{
+  display:flex;gap:.25rem;padding:.4rem;border-bottom:1px solid var(--border);background:#0f1319;overflow:auto;user-select:none
+}
+.tab{padding:.3rem .6rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);cursor:pointer;user-select:none}
+.tab:hover{background:#0f141c;color:var(--text)}
+.tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
+
+.buffer{display:none;overflow:visible;flex:initial}
+.buffer.show{display:block}
+
+/* Markdown-ish code block aesthetic */
+pre{margin:0;height:auto;overflow:visible}
+pre code{
+  display:block;white-space:pre-wrap;word-break:break-word;
+  padding:1rem 1.25rem;color:var(--text);
+}
+
+.profile{float:right;margin:.2rem 1.6rem .6rem 1.4rem;padding:8px 8px 8px 8px}
+.profile img{width:var(--profile-size);height:var(--profile-size);border-radius:8px;object-fit:cover;border:1px solid var(--border);box-shadow:0 4px 18px rgba(0,0,0,.35);display:block;margin:24px auto 8px auto}
+/* Inner wrapper to create strong L/R space around the photo + icons (desktop) */
+.profile-inner{padding-inline:clamp(6px, 1.2vw, 20px); width:auto}
+/* Reduce right inner padding next to text column */
+.profile-inner{padding-inline-end:clamp(2px, 0.6vw, 10px)}
+
+/* Contact icons */
+.contact-icons{display:flex;gap:.6rem;align-items:center;padding:0 1.25rem;margin:0}
+.icon-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--panel);color:var(--text);text-decoration:none}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Place icons on same line as name (right aligned) */
+#about .md-view .md-h1{display:flex;align-items:center}
+#about .md-view .md-h1 .contact-icons{display:none}
+/* Icons inside profile card */
+.profile .contact-icons{margin-top:18px;display:flex;gap:.6rem;align-items:center;justify-content:center;padding:0}
+/* Spacing for CV link paragraph */
+.md-view .cv-link{margin-top:24px}
+.md-view .cv-link a{font-weight:700}
+/* Papers PDF link styling */
+.md-view .pubs-pdf-link{margin-top:12px}
+.md-view .pubs-pdf-link a{font-weight:700}
+/* ADS link styling */
+.md-view .ads-link{margin-top:24px;margin-bottom:14px}
+.md-view .ads-link a{font-weight:700}
+/* Emphasize my name in papers */
+#papers .md-view .me{font-weight:800;color:#ffffff}
+
+/* Publications enhanced layout */
+#papers .md-view .md-li{display:flex;align-items:flex-start;gap:.55rem}
+#papers .md-view .md-li .bullet{color:var(--accent-3);margin-top:.45rem}
+#papers .md-view .pub-item{flex:1;padding:.5rem .75rem;background:transparent}
+#papers .md-view .pub-head{font-weight:700}
+#papers .md-view .pub-date{color:var(--accent-3)}
+#papers .md-view .pub-meta{margin-top:.25rem}
+/* Slightly tighter spacing between papers list items */
+#papers .md-view .md-li{margin:0 0 .45rem .2rem}
+#papers .md-view .pub-li{margin-bottom:.45rem}
+
+/* About: colored dates in bullet lists */
+#about .md-view .about-date{color:var(--accent-3)}
+
+/* Projects: figure floated right at ~40% width; stack on mobile */
+#projects .md-img{float:right;width:min(40%, 480px);margin:.2rem 0 .6rem 1rem}
+#projects .md-img img{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.28);background:var(--panel)}
+@media (max-width: 900px){
+  #projects .md-img{float:none;width:min(92vw, 520px);margin:.5rem auto}
+}
+
+/* Rendered markdown-like view (enhanced) */
+.md-view{display:none;padding:1rem 1.75rem;color:var(--text);
+  font-family:"JetBrains Mono","Fira Code","IBM Plex Mono","Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size:18px;line-height:1.72
+}
+.md-h1{font-weight:750;font-size:2rem;color:var(--accent-2);margin:.1rem 0 .8rem}
+.md-h2{font-weight:750;font-size:1.6rem;color:var(--accent);margin:1.1rem 0 .65rem}
+.md-p{margin:0 0 .35rem;color:var(--text)}
+
+/* slight left padding for headings and paragraphs */
+.md-h1,.md-h2,.md-p{padding-left:.5rem}
+
+/* Match top padding of first H1 across sections */
+#about .md-view .md-h1:first-of-type{margin-top:.8rem}
+#papers .md-view .md-h1:first-of-type{margin-top:.8rem}
+#projects .md-view .md-h1:first-of-type{margin-top:.8rem}
+.md-li{margin:0 0 .8rem .2rem}
+.md-li .bullet{color:var(--accent-3);margin-right:.55rem}
+.md-blank{height:.35rem}
+
+/* Show enhanced view after JS render */
+body.md-ready pre{display:none}
+body.md-ready .md-view{display:block}
+
+/* Extra right padding in about to avoid overlapping the photo */
+
+/* Links inside buffers */
+.buffer a{color:var(--accent)}
+.buffer a:visited{color:var(--accent)}
+
+/* About layout: text and image side-by-side */
+#about .about-layout{display:flex;gap:3rem;align-items:flex-start}
+#about .about-text{flex:1;min-width:0}
+/* When using flex layout, don't float the profile and add top padding */
+#about .about-layout .profile{float:none;margin:18px 0 24px 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;box-sizing:border-box;flex:0 0 auto}
+
+/* Align md-bio text with profile side-by-side */
+#about .md-view .md-bio{display:grid;grid-template-columns:1fr auto;column-gap:2rem;align-items:start}
+#about .md-view .md-bio .bio-content{min-width:0}
+/* Reduce extra padding/margins in profile and image when placed inside bio */
+#about .md-view .md-bio .profile{float:none;margin:2px 0 10px 0;padding:0 6px 4px}
+#about .md-view .md-bio .profile img{margin:4px auto 6px auto}
+
+/* Bio-only width so photo can fit on the right; education/work return to full width */
+#about .md-view .md-bio{max-width:none;padding-right:0}
+
+/* Responsive: stack image below content on narrow screens */
+@media (max-width: 900px){
+  /* Center container and allow narrow widths */
+  .ide-window{width:96vw;min-width:0;margin:0 auto;border-radius:8px}
+  .ide-window.maximized{width:96vw;max-width:none}
+  .workspace{flex-direction:column}
+
+  /* Allow horizontal scroll for tabs inside titlebar on narrow screens */
+  .titlebar .editor-header{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .titlebar .tab{flex:0 0 auto}
+
+  /* Tabs become horizontally scrollable with touch momentum */
+  .editor-header{overflow-x:auto;-webkit-overflow-scrolling:touch;gap:.35rem}
+  .tab{flex:0 0 auto;padding:.45rem .75rem}
+
+  /* Name + icons can wrap; icons drop to next line under name if needed */
+  #about .md-view .md-h1{flex-wrap:wrap;row-gap:.4rem}
+  #about .md-view .md-h1 .contact-icons{margin-left:0}
+
+  /* Photo stacks and centers on mobile; icons appear below image */
+  #about .about-layout{display:grid !important; grid-template-columns: 1fr; grid-template-areas: 
+    "text"
+    "profile"; gap:.8rem}
+  #about .about-layout > .about-text{grid-area:text !important}
+  #about .about-layout > .profile{grid-area:profile !important}
+  /* When profile is inside md-bio, stack content then profile */
+  #about .md-view .md-bio{grid-template-columns:1fr;row-gap:.8rem}
+.profile{float:none;margin:1rem auto;padding:8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;box-sizing:border-box;width:auto;border:0;background:transparent;box-shadow:none;border-radius:0}
+#about .md-view .md-bio{max-width:none;padding-right:0}
+
+  /* Drive image size by the inner card width on mobile */
+  .profile-inner{width:clamp(260px, 74vw, 320px)}
+  .profile img{width:100%;max-width:100%;aspect-ratio:1/1;height:auto}
+}
+@media (max-width: 600px){
+  /* On very small phones, allow a bit more width (still within viewport) */
+  :root{ --outer-gap-scale: 0.45; } /* much smaller top/bottom outer space on phones */
+  .profile-inner{width:min(80vw, 320px)}
+  .profile img{width:100%;max-width:100%;aspect-ratio:1/1;height:auto}
+
+  /* Slightly more top breathing room for profile on phones */
+  #about .md-view .md-bio .profile{margin-top:8px}
+  #about .md-view .md-bio .profile img{margin-top:8px}
+
+  /* Window controls remain in a row on phones */
+  .window-controls{flex-direction:row;align-items:center}
+
+  /* Place theme toggle inline with page H1 on phones */
+  .md-view .md-h1{display:flex;align-items:center}
+  .md-view .md-h1 .theme-toggle{position:static;width:32px;height:32px;margin-left:auto;border-radius:8px}
+
+  /* Larger tap targets for icons */
+  .icon-btn{width:42px;height:42px;border-radius:10px}
+
+  /* Typography scale tweak for compact screens */
+  .md-view{font-size:17px;line-height:1.7}
+  .md-h1{font-size:1.36rem}
+  .md-h2{font-size:1.12rem}
+
+  /* Reduce outer margins slightly */
+  .ide-window{margin:0 auto}
+}
+
+/* Links inside buffers */
+.buffer a{color:var(--accent)}
+.buffer a:visited{color:var(--accent)}
+
+/* Pong overlay */
+.pong-overlay{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:2000;padding:12px}
+.pong-overlay.show{display:flex}
+.pong-wrap{position:relative;box-shadow:0 6px 24px rgba(0,0,0,.35);border:1px solid var(--border);border-radius:10px;background:var(--panel)}
+.pong-wrap canvas{display:block;background:var(--panel-2);border-radius:10px}
+/* Return button removed; end message is drawn on canvas */
+
+.statusbar{
+  display:flex;gap:.75rem;align-items:center;padding:.35rem .6rem;border-top:1px solid var(--border);background:var(--panel);color:var(--muted)
+}
+.statusbar .spacer{flex:1}
+

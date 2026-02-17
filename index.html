@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tomas Plsek</title>
+  <meta name="description" content="Personal website of Tomáš Plšek" />
+  <link rel="icon" type="image/png" href="CADET.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme"></button>
+  <div class="ide-window">
+    <div class="titlebar">
+<div class="title"></div>
+      <div class="window-controls" role="group" aria-label="Window controls">
+<button class="btn min" title="Minimize" data-tip="Minimize" aria-label="Minimize">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/></svg>
+        </button>
+        <button class="btn max" title="Maximize" data-tip="Maximize" aria-label="Maximize">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+        </button>
+        <button class="btn close" title="Close" data-tip="Close" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <main class="editor">
+        <div class="editor-header">
+          <span class="tab active" data-target="about">about.md</span>
+          <span class="tab" data-target="papers">papers.md</span>
+          <span class="tab" data-target="projects">projects.md</span>
+        </div>
+
+        <article class="buffer show" id="about">
+          <div class="profile">
+            <div class="profile-inner">
+              <img src="img_crop.jpeg" alt="Photo of Tomáš Plšek">
+              <div class="contact-icons" aria-label="Contact links">
+                <!-- Personal email first (envelope) -->
+                <a class="icon-btn" href="mailto:plsek@protonmail.com" title="Personal email" aria-label="Personal email">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 2 7.6 5.3L19.6 7H4.4zm15.6 10V9.1l-7.2 5a1 1 0 0 1-1.2 0L4 9.1V17h16z"/></svg>
+                </a>
+                <!-- Work email second (briefcase icon) -->
+                <a class="icon-btn" href="mailto:plsek@physics.muni.cz" title="Work email" aria-label="Work email">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <path fill="currentColor" d="M9 4a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V10a3 3 0 0 0-3-3h-1V6a2 2 0 0 0-2-2H9zm0 3V6h6v1H9zm-3 4h12a1 1 0 0 1 1 1v1.2l-5.2 2.2a3 3 0 0 1-2.6 0L5 13.2V12a1 1 0 0 1 1-1z"/>
+                  </svg>
+                </a>
+                <a class="icon-btn" href="https://github.com/tomasplsek" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 .6a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.3-5.6-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.1s1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.2-1.5 3.3-1.2 3.3-1.2a4.3 4.3 0 0 1 .1 3.1 4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.9 5.7-5.6 6 .5.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.4 11.4 0 0 0 12 .6z"/></svg>
+                </a>
+                <a class="icon-btn" href="https://orcid.org/0000-0001-6411-3651" target="_blank" rel="noopener" title="ORCID" aria-label="ORCID">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#7ee787"/><text x="8" y="16" font-size="9" font-family="ui-monospace, monospace" fill="#0b0e14">iD</text></svg>
+                </a>
+                <!-- MUNI badge icon (stylized MU) -->
+                <a class="icon-btn muni" href="https://is.muni.cz/osoba/461281?lang=en" target="_blank" rel="noopener" title="MUNI profile" aria-label="MUNI profile">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="4" fill="#4ea1ff"/>
+                    <text x="6.6" y="16" font-size="10" font-weight="700" font-family="ui-monospace, monospace" fill="#0b0e14">MU</text>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+<pre><code># Tomáš Plšek
+
+🎓 I am an astrophysics PhD student at the Department of Theoretical Physics and Astrophysics (DTPA), Masaryk University in Brno, Czech Republic, working in the **High Energy Astrophysics ([HEA](https://hea.physics.muni.cz/))** group led by Prof. Norbert Werner. My research focuses on AGN feedback in giant elliptical galaxies, with a specialisation in the study of **X-ray cavities** in their hot atmospheres. I work extensively on image and spectral analysis of X-ray observations and on applying machine learning methods to astronomical data.
+
+💻 Beyond astronomy & astrophysics, I genuinely enjoy coding, and in my free time, I like to play with home automation projects 🏠🔌. When I step away from the screen, I play football ⚽, ride my bike 🚴, and spend time gardening 🌱.
+
+## Education
+- since 09/2021 — PhD candidate, "Understanding the physics of hot galactic atmospheres" (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
+- 09/2019–06/2021 — MSc, "Relation between Bondi accretion and jets powers in giant elliptical galaxies" (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
+- 09/2016–06/2019 — BSc, "Dark matter modelling of clusters of galaxies" (supervisor: Filip Hroch), DTPA, Faculty of Science, Masaryk University
+
+## Work experience
+- since 03/2021 — Researcher, DTPA, Masaryk University: "Development of novel ML methods in astrophysics; data analysis"
+- 10/2019–12/2020 — Researcher, DPE, Masaryk University: "Plasma treatment of materials; optical emission spectroscopy; surface energy; data analysis"
+- 05/2018–09/2018 — Demonstrator, Vyškov Observatory: "Public astronomical demonstrations"
+
+[Download full CV (PDF)](cv.pdf)
+
+</code></pre>
+        </article>
+
+
+<article class="buffer" id="papers">
+<pre><code># Publications
+
+## Major Contributions
+- Jan 2024 — "The infalling elliptical galaxy M89: the chemical composition of the AGN disturbed hot atmosphere" — Kara S., Plšek T., Protušová K., Breuer J.-P., Werner N., Mernier F., Ercan E. N.; MNRAS 528, 1500–1516
+- Nov 2023 — "CADET: pipeline for detection of X-ray cavities in hot galactic and cluster atmospheres" — Plšek T., Werner N., Topinka M., Simionescu A.; MNRAS 527, 3315–3346
+- Sep 2022 — "The relation between accretion rate and jet power in early-type galaxies with thermally unstable hot atmospheres" — Plšek T., Werner N., Grossová R., Topinka M., Simionescu A., Allen S. W.; MNRAS 517, 3682–3710
+
+## Contributions
+- Oct 2025 — "Compact stellar systems hosting an intermediate-mass black hole: Magnetohydrodynamic study of inflow–outflow dynamics" — Labaj M., Ressler S. M., Zajaček M., Plšek T., Ripperda B., Peißker F.; A&A 702, A233
+- Sep 2025 — "The thermodynamic structure and large-scale structure filament in MACS J0717.5+3745" — Breuer J.-P., Werner N., Plšek T., Mernier F., Umetsu K., Simionescu A., Devlin M., Di Mascolo L., Dibblee-Barkman T., Dicker S., Mason B. S., Mroczkowski T., Romero C., Sarazin C. L., Sievers J.; accepted to A&A
+- Jul 2025 — "X-ray investigation of the remarkable galaxy group Nest200047" — Majumder A., Simionescu A., Plšek T., Brienza M., Churazov E., Khabibullin I., Gastaldello F., Botteon A., Röttgering H., Brüggen M., Lyskova N., Rajpurohit K., Sunyaev R. A., Wise M. W.; A&A 699, A375
+- Feb 2025 — "MeerKAT discovery of gigahertz radio emission extending from Abell 3017 towards Abell 3016" — Hu D., Werner N., Xu H., Zheng Q., Breuer J.-P., Wu L., Duchesne S. W., van Weeren R. J., Sun M., Zhang C., Johnston-Hollitt M., Shan H., Guo Q., Zhu Z., Wang J., Gu J., Zhao Y., Siew H., Mao J., Zhang Z., Plšek T.; A&A 694, A320
+- Feb 2025 — "The bulk motion of gas in the core of the Centaurus galaxy cluster" — XRISM Collaboration [including Plšek T.]; Nature 638, 365–369
+- Nov 2024 — "ICECUBE AGN neutrino candidate PKS 1717+177: dark deflector bends nuclear jet" — Britzen S., Kovačević A. B., Zajaček M., Popović L. Č., Pashchenko I. N., Kun E., Pánis R., Jaron F., Plšek T., Tursunov A., Stuchlík Z.; MNRAS 535, 2742–2762
+- Oct 2023 — "Ram-pressure stripped radio tail and two ULXs in the spiral galaxy HCG 97b" — Hu D., Zajaček M., Werner N., Grossová R., Jáchym P., Roberts I. D., Ignesti A., Kenney J. D. P., Plšek T., Breuer J.-P., Shimwell T., Tasse C., Zhu Z., Wu L.; MNRAS 527, 1062–1080
+- Feb 2022 — "Very Large Array Radio Study of a Sample of Nearby X-Ray and Optically Bright Early-type Galaxies" — Grossová R., Werner N., Massaro F., Lakhchaura K., Plšek T., Gabányi K., Rajpurohit K., Canning R. E. A., Nulsen P., O’Sullivan E., Allen S. W., Fabian A.; ApJS 258, 30
+
+## Submitted publications
+- Nov 2025 — "IceCube candidate neutrino emitter PKS 1413+135 is gravitationally lensed on pc-scales" — Britzen S., Zajaček M., Fendt C., Best H., Jaron F., Pashchenko I. N., Plšek T., Seidel G.; submitted to MNRAS
+- Mar 2025 — "Gravitationally lensed supermassive binary black hole in IceCube AGN Neutrino candidate PKS 2233-148" — Britzen S., Kovačević A. B., Popović L. Č., Kun E., Zajaček M., Jaron F., Plšek T., Pashchenko I. N., Pánis R., Stuchlík Z.; submitted to A&A
+
+List of all publications (ADS)
+[List of publications (PDF)](list_of_publications.pdf)
+</code></pre>
+        </article>
+
+        <article class="buffer" id="projects">
+<pre><code># Projects
+
+## [Cavity Detection Tool (CADET)](https://github.com/tomasplsek/CADET)
+[![CADET architecture](architecture.png)](https://github.com/tomasplsek/CADET)
+
+CADET is a Python pipeline using machine learning to detect and size X-ray cavities in massive early-type galaxies and clusters observed with Chandra. It is released as the Python package [pycadet](https://pypi.org/project/pycadet/); the training and real-data application are described in [Plšek et al. 2024](https://academic.oup.com/mnras/article/527/2/3315/7339785). The pipeline provides an end‑to‑end workflow (data preparation, training/validation, and inference) and produces reproducible cavity catalogs with clear provenance.
+
+## [Interactive beta modeling](https://github.com/tomasplsek/Beta-modelling)
+[![Interactive beta modeling](beta.png)](https://github.com/tomasplsek/Beta-modelling)
+
+A Jupyter-based tool for fitting 2D surface-brightness distributions of galaxies with single or composite [beta models](https://ui.adsabs.harvard.edu/abs/1976A%26A....49..137C/abstract) and inspecting residuals. It lets you interactively adjust model parameters, visualize residual structure in real time, and export best‑fit values. Combines [Sherpa](https://cxc.cfa.harvard.edu/sherpa/) for modeling with [ipywidgets](https://github.com/jupyter-widgets/ipywidgets) for interactivity.
+
+</code></pre>
+        </article>
+      </main>
+    </div>
+
+    <footer class="statusbar">
+      <span class="spacer"></span>
+      <span>© Tomas Plsek</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
