@@ -29,6 +29,8 @@
 :root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#f8fafc,#e9eef4)}
 :root[data-theme="light"] .window-controls .btn:hover{background:#e9eef4;color:#24292f;border-color:#7d8590}
 :root[data-theme="light"] .tab:hover{background:#edf2f7}
+/* Light mode: ensure my name in papers is bold and black */
+:root[data-theme="light"] #papers .md-view .me{color:var(--text);font-weight:800}
 html,body{height:100%}
 body{
   margin:0; background:var(--bg); color:var(--text);
