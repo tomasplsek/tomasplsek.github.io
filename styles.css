@@ -25,6 +25,9 @@
   --text:#0b0e14;
   --muted:#57606a;
   --border:#d0d7de;
+  /* Light-mode green/orange accents */
+  --accent-2:#2e7d32; /* headers/links: rich green */
+  --accent-3:#d97706; /* dates: warm orange */
 }
 :root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#f8fafc,#e9eef4)}
 :root[data-theme="light"] .window-controls .btn:hover{background:#e9eef4;color:#24292f;border-color:#7d8590}
@@ -34,7 +37,9 @@
 html,body{height:100%}
 body{
   margin:0; background:var(--bg); color:var(--text);
-  font:14px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Ubuntu Mono", monospace;
+  font:15px/1.65 "JetBrains Mono","IBM Plex Mono","Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;
+  letter-spacing:.005em;
   height:auto; min-height:100vh; box-sizing:border-box; padding-block: var(--outer-gap);
   /* Prevent layout shift when vertical scrollbar appears/disappears */
   overflow-y: scroll; /* fallback, always reserve space */
@@ -52,7 +57,7 @@ body{
 /* When tabs are placed inside the titlebar */
 .titlebar .editor-header{display:flex;align-items:center;gap:.45rem;padding:0;margin:0;border:0;background:transparent;flex:0 1 auto;overflow:auto;max-width:100%}
 /* Classic tab look: no bottom border, top corners rounded */
-.titlebar .tab{position:relative;padding:.36rem .62rem .24rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;background:transparent;color:var(--muted)}
+.titlebar .tab{position:relative;padding:.36rem .62rem .24rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;background:transparent;color:var(--muted);font-size:1rem}
 .titlebar .tab:hover{background:#0f141c;color:var(--text)}
 /* Active tab: restore original inset underline at the bottom of the tab */
 .titlebar .tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
@@ -106,7 +111,7 @@ body{
 .editor-header{
   display:flex;gap:.25rem;padding:.4rem;border-bottom:1px solid var(--border);background:#0f1319;overflow:auto;user-select:none
 }
-.tab{padding:.3rem .6rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);cursor:pointer;user-select:none}
+.tab{padding:.3rem .6rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);cursor:pointer;user-select:none;font-size:.95rem}
 .tab:hover{background:#0f141c;color:var(--text)}
 .tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
 
@@ -129,8 +134,31 @@ pre code{
 
 /* Contact icons */
 .contact-icons{display:flex;gap:.6rem;align-items:center;padding:0 1.25rem;margin:0}
-.icon-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--panel);color:var(--text);text-decoration:none}
-.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.icon-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--panel);color:#ffffff;text-decoration:none}
+/* Keep icons white on hover; only the border uses accent */
+.icon-btn:hover{border-color:var(--accent);color:#ffffff}
+/* Force SVG glyphs to white for generic icons (not ORCID/MUNI) */
+.icon-btn:not(.orcid):not(.muni) svg{fill:#ffffff;stroke:#ffffff}
+.icon-btn:not(.orcid):not(.muni) svg path,
+.icon-btn:not(.orcid):not(.muni) svg rect,
+.icon-btn:not(.orcid):not(.muni) svg circle,
+.icon-btn:not(.orcid):not(.muni) svg line{fill:#ffffff;stroke:#ffffff}
+
+/* Light mode overrides: email and GitHub icons should be black */
+:root[data-theme="light"] .contact-icons a[href^="mailto:"]{color:var(--text)}
+:root[data-theme="light"] .contact-icons a[href*="github.com"]{color:var(--text)}
+:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg,
+:root[data-theme="light"] .contact-icons a[href*="github.com"] svg{fill:var(--text);stroke:var(--text)}
+:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg path,
+:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg rect,
+:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg circle,
+:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg line,
+:root[data-theme="light"] .contact-icons a[href*="github.com"] svg path,
+:root[data-theme="light"] .contact-icons a[href*="github.com"] svg rect,
+:root[data-theme="light"] .contact-icons a[href*="github.com"] svg circle,
+:root[data-theme="light"] .contact-icons a[href*="github.com"] svg line{fill:var(--text);stroke:var(--text)}
+:root[data-theme="light"] .contact-icons a[href^="mailto:"].icon-btn:hover,
+:root[data-theme="light"] .contact-icons a[href*="github.com"].icon-btn:hover{color:var(--text);border-color:var(--accent)}
 
 /* Place icons on same line as name (right aligned) */
 #about .md-view .md-h1{display:flex;align-items:center}
@@ -164,19 +192,31 @@ pre code{
 #about .md-view .about-date{color:var(--accent-3)}
 
 /* Projects: figure floated right at ~40% width; stack on mobile */
-#projects .md-img{float:right;width:min(40%, 480px);margin:.2rem 0 .6rem 1rem}
+#projects .md-img{float:right;width:min(40%, 480px);margin:.2rem 0 .6rem 3.2rem}
 #projects .md-img img{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.28);background:var(--panel)}
+#projects .md-img .caption{margin-top:6px;font-size:.9rem;color:var(--muted);opacity:.95;text-align:right}
+/* Dark mode: increase caption contrast */
+:root:not([data-theme="light"]) #projects .md-img .caption{color:var(--text);opacity:.8}
+/* Make beta modelling figure wider on desktop */
+#projects .md-img.beta-fig{width:min(48%, 560px)}
+/* Desktop: a bit more breathing room below the last project */
+@media (min-width: 901px){
+  #projects .md-view{padding-bottom:2.5rem}
+}
 @media (max-width: 900px){
-  #projects .md-img{float:none;width:min(92vw, 520px);margin:.5rem auto}
+  #projects .md-img,
+  #projects .md-img.beta-fig{float:none;width:100%;max-width:100%;margin:.5rem 0}
+  /* Extra space when image follows a paragraph */
+#projects .md-p + .md-img{margin-top:1.1rem}
 }
 
 /* Rendered markdown-like view (enhanced) */
-.md-view{display:none;padding:1rem 1.75rem;color:var(--text);
-  font-family:"JetBrains Mono","Fira Code","IBM Plex Mono","Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size:18px;line-height:1.72
+.md-view{display:none;padding:1rem 2.25rem;color:var(--text);
+  font-family:"JetBrains Mono","IBM Plex Mono","Fira Code","Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size:19px;line-height:1.74
 }
 .md-h1{font-weight:750;font-size:2rem;color:var(--accent-2);margin:.1rem 0 .8rem}
-.md-h2{font-weight:750;font-size:1.6rem;color:var(--accent);margin:1.1rem 0 .65rem}
+.md-h2{font-weight:750;font-size:1.6rem;color:var(--accent-2);margin:1.1rem 0 .65rem}
 .md-p{margin:0 0 .35rem;color:var(--text)}
 
 /* slight left padding for headings and paragraphs */
@@ -197,8 +237,8 @@ body.md-ready .md-view{display:block}
 /* Extra right padding in about to avoid overlapping the photo */
 
 /* Links inside buffers */
-.buffer a{color:var(--accent)}
-.buffer a:visited{color:var(--accent)}
+.buffer a{color:var(--accent-2)}
+.buffer a:visited{color:var(--accent-2)}
 
 /* About layout: text and image side-by-side */
 #about .about-layout{display:flex;gap:3rem;align-items:flex-start}
@@ -229,7 +269,7 @@ body.md-ready .md-view{display:block}
 
   /* Tabs become horizontally scrollable with touch momentum */
   .editor-header{overflow-x:auto;-webkit-overflow-scrolling:touch;gap:.35rem}
-  .tab{flex:0 0 auto;padding:.45rem .75rem}
+  .tab{flex:0 0 auto;padding:.45rem .75rem;font-size:.98rem}
 
   /* Name + icons can wrap; icons drop to next line under name if needed */
   #about .md-view .md-h1{flex-wrap:wrap;row-gap:.4rem}
@@ -277,11 +317,16 @@ body.md-ready .md-view{display:block}
 
   /* Reduce outer margins slightly */
   .ide-window{margin:0 auto}
+
+  /* Pong: edge-to-edge on mobile */
+  .pong-overlay{padding:0}
+  .pong-wrap{box-shadow:none;border:0;border-radius:0}
+  .pong-wrap canvas{border-radius:0}
 }
 
 /* Links inside buffers */
-.buffer a{color:var(--accent)}
-.buffer a:visited{color:var(--accent)}
+.buffer a{color:var(--accent-2)}
+.buffer a:visited{color:var(--accent-2)}
 
 /* Pong overlay */
 .pong-overlay{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:2000;padding:12px}

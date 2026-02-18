@@ -282,6 +282,69 @@ const papers = document.getElementById('papers');
     });
   })();
 
+  // Projects: add captions and reorder figures below first paragraph on mobile
+  (function tweakProjects(){
+    const proj = document.getElementById('projects');
+    if(!proj) return;
+    const view = proj.querySelector('.md-view');
+    if(!view) return;
+
+    function ensureCaptions(){
+      view.querySelectorAll('.md-img').forEach(box => {
+        const img = box.querySelector('img');
+        if(!img) return;
+        const src = (img.getAttribute('src')||'').toLowerCase();
+        let caption = '';
+        if(src.includes('architecture.png')) caption = 'Schematic image of the CADET pipeline';
+else if(src.includes('beta.png')) caption = 'Interface of the Interactive beta modelling tool.';
+        // add wider class for beta figure
+        if(src.includes('beta.png')) box.classList.add('beta-fig');
+        if(!caption) return;
+        let cap = box.querySelector('.caption');
+        if(!cap){
+          cap = document.createElement('div');
+          cap.className = 'caption';
+          box.appendChild(cap);
+        }
+        // ensure trailing period
+        const text = caption.trim();
+        cap.textContent = /[.!?]$/.test(text) ? text : text + '.';
+      });
+    }
+
+    function reorderMobile(){
+      const isMobile = window.matchMedia('(max-width: 900px)').matches;
+      if(!isMobile) return; // only move on mobile
+      // For each section between H2 and next H2, move any leading md-img to after the first md-p
+      const nodes = Array.from(view.children);
+      for(let i=0;i<nodes.length;i++){
+        if(!nodes[i].classList || !nodes[i].classList.contains('md-h2')) continue;
+        // collect until next md-h2
+        const section = [];
+        let j=i+1;
+        for(; j<nodes.length && !(nodes[j].classList && nodes[j].classList.contains('md-h2')); j++){
+          section.push(nodes[j]);
+        }
+        const firstImg = section.find(n => n.classList && n.classList.contains('md-img'));
+        const firstP = section.find(n => n.classList && n.classList.contains('md-p'));
+        if(firstImg && firstP){
+          const rel = firstImg.compareDocumentPosition(firstP);
+          // If image is before paragraph, move it to just after the first paragraph
+          if(rel & Node.DOCUMENT_POSITION_FOLLOWING){
+            firstP.insertAdjacentElement('afterend', firstImg);
+          }
+        }
+        i = j-1; // jump to next section
+      }
+    }
+
+    ensureCaptions();
+    reorderMobile();
+    window.addEventListener('resize', reorderMobile);
+    const header = document.querySelector('.editor-header');
+    if(header){ header.addEventListener('click', ()=> setTimeout(()=>{ ensureCaptions(); reorderMobile(); }, 0)); }
+  })();
+
   // Wrap all content from after H1 up to (but not including) first H2 into a bio container
   (function wrapBio(){
     const aboutEl = document.getElementById('about');
@@ -374,19 +437,50 @@ const papers = document.getElementById('papers');
     const canvas = overlay.querySelector('#pong-canvas');
     const ctx = canvas.getContext('2d');
 
+    // Ensure theme toggle remains accessible during Pong
+    let themeBtn = document.querySelector('.theme-toggle');
+    if(themeBtn){
+      overlay.appendChild(themeBtn);
+      themeBtn.classList.add('in-pong');
+      themeBtn.style.position = 'fixed';
+      themeBtn.style.top = '16px';
+      themeBtn.style.right = '16px';
+      themeBtn.style.zIndex = '10001';
+    }
+
     let rafId = null;
     let playing = true;
 
     function sizeCanvas(){
-      // Responsive sizing (use taller field: ~4:3)
-      const maxW = Math.min(window.innerWidth * 0.9, 960);
-      const maxH = Math.min(window.innerHeight * 0.9, 800);
-      const aspect = 3/4; // height/width for 4:3 (taller)
-      let w = maxW;
-      let h = w * aspect;
-      if(h > maxH){ h = maxH; w = h / aspect; }
-      canvas.width = Math.round(w);
-      canvas.height = Math.round(h);
+      const aspectDesktop = 3/4; // height/width for landscape-ish (~4:3)
+      const aspectMobile  = 4/3; // height/width for tall portrait (~3:4 width/height)
+      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+      if(isMobile){
+        // Fill (almost) the whole viewport height on mobile; allow free aspect
+        const pad = 0; // edge-to-edge
+        const targetH = Math.max(200, window.innerHeight - pad*2);
+        const targetW = Math.max(200, window.innerWidth - pad*2);
+        const h = Math.min(targetH, Math.round(window.innerHeight * 0.998));
+        const w = targetW; // use available width
+        canvas.width = w;
+        canvas.height = h;
+      } else {
+        // Desktop: almost full viewport height with comfortable margins
+        const pad = 24;
+        const maxH = Math.max(300, Math.round(window.innerHeight * 0.94) - pad*2);
+        const maxW = Math.max(300, Math.round(window.innerWidth * 0.9) - pad*2);
+        let h = maxH;
+        let w = Math.round(h / aspectDesktop);
+        if(w > maxW){
+          w = maxW;
+          h = Math.round(w * aspectDesktop);
+        }
+        // Cap extreme width to avoid ultra-wide stretching
+        const hardMaxW = 1400;
+        if(w > hardMaxW){ w = hardMaxW; h = Math.round(w * aspectDesktop); }
+        canvas.width = w;
+        canvas.height = h;
+      }
     }
     sizeCanvas();
 
@@ -394,6 +488,7 @@ const papers = document.getElementById('papers');
       // Top-vs-bottom paddles (opponent top, player bottom)
       pw: 120,   // paddle width (length)
       ph: 12,    // paddle height (thickness)
+      br: 6,     // ball radius (bigger for visibility)
       leftY: 0,  // reuse as top paddle X (left coordinate)
       rightY: 0, // reuse as bottom paddle X (left coordinate)
       bx: 0,
@@ -417,7 +512,8 @@ const papers = document.getElementById('papers');
     }
 
     function resetPaddles(){
-      state.ph = Math.max(8, Math.round(canvas.height*0.024));
+      // Slightly thinner paddles
+      state.ph = Math.max(6, Math.round(canvas.height*0.018));
       state.pw = Math.max(60, Math.round(canvas.width*0.18));
       // Center paddles horizontally
       state.leftY = (canvas.width - state.pw)/2;   // top paddle X
@@ -426,6 +522,9 @@ const papers = document.getElementById('papers');
 
     resetPaddles();
     resetBall();
+
+    // Countdown before start
+    let countdownUntil = Date.now() + 3000; // 3 seconds
 
     // Controls: mouse/touch for right paddle; arrows as fallback
     function onMouse(e){
@@ -467,26 +566,44 @@ const papers = document.getElementById('papers');
       canvas.removeEventListener('touchmove', onTouch);
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('keyup', onKeyUp);
+      // Return theme toggle to normal placement
+      if(themeBtn){
+        themeBtn.classList.remove('in-pong');
+        themeBtn.style.position = '';
+        themeBtn.style.top = '';
+        themeBtn.style.right = '';
+        themeBtn.style.zIndex = '';
+        document.body.appendChild(themeBtn);
+        // Trigger re-placement logic bound to resize
+        window.dispatchEvent(new Event('resize'));
+      }
     }
 
     function step(){
-      // Keyboard control fallback
-      if(state.left) state.rightY = Math.max(0, state.rightY - 8);
-      if(state.right) state.rightY = Math.min(canvas.width - state.pw, state.rightY + 8);
+      const now = Date.now();
+      const playingLive = now >= countdownUntil;
 
-      // AI for top paddle: follow ball X with slight lag
+      // Keyboard control fallback (only after countdown)
+      if(playingLive){
+        if(state.left) state.rightY = Math.max(0, state.rightY - 8);
+        if(state.right) state.rightY = Math.min(canvas.width - state.pw, state.rightY + 8);
+      }
+
+      // AI for top paddle: follow ball X with slight lag (freeze during countdown)
       const targetX = state.bx - state.pw/2;
       if(state.leftY + 6 < targetX) state.leftY = Math.min(targetX, state.leftY + state.aiSpeed);
       else if(state.leftY - 6 > targetX) state.leftY = Math.max(targetX, state.leftY - state.aiSpeed);
       state.leftY = Math.max(0, Math.min(canvas.width - state.pw, state.leftY));
 
-      // Move ball
-      state.bx += state.bvx;
-      state.by += state.bvy;
+      // Move ball (only after countdown)
+      if(playingLive){
+        state.bx += state.bvx;
+        state.by += state.bvy;
+      }
 
       // Collide left/right walls
-      if(state.bx < 4){ state.bx = 4; state.bvx = Math.abs(state.bvx); }
-      if(state.bx > canvas.width - 4){ state.bx = canvas.width - 4; state.bvx = -Math.abs(state.bvx); }
+      if(state.bx < state.br){ state.bx = state.br; state.bvx = Math.abs(state.bvx); }
+      if(state.bx > canvas.width - state.br){ state.bx = canvas.width - state.br; state.bvx = -Math.abs(state.bvx); }
 
       // Paddle rects (top and bottom)
       const topPad = {x:state.leftY, y:20, w:state.pw, h:state.ph};
@@ -494,28 +611,28 @@ const papers = document.getElementById('papers');
 
       // Collisions with paddles
       // Top paddle
-      if(state.by - 4 <= topPad.y + topPad.h && state.bx >= topPad.x && state.bx <= topPad.x + topPad.w && state.bvy < 0){
-        state.by = topPad.y + topPad.h + 4;
+      if(state.by - state.br <= topPad.y + topPad.h && state.bx >= topPad.x && state.bx <= topPad.x + topPad.w && state.bvy < 0){
+        state.by = topPad.y + topPad.h + state.br;
         state.bvy = Math.abs(state.bvy) * 1.03; // bounce downward and speed up slightly
         const rel = (state.bx - (topPad.x + topPad.w/2)) / (topPad.w/2);
         state.bvx = Math.max(-8, Math.min(8, state.bvx + rel * 3));
       }
       // Bottom paddle
-      if(state.by + 4 >= botPad.y && state.bx >= botPad.x && state.bx <= botPad.x + botPad.w && state.bvy > 0){
-        state.by = botPad.y - 4;
+      if(state.by + state.br >= botPad.y && state.bx >= botPad.x && state.bx <= botPad.x + botPad.w && state.bvy > 0){
+        state.by = botPad.y - state.br;
         state.bvy = -Math.abs(state.bvy) * 1.03; // bounce upward
         const rel = (state.bx - (botPad.x + botPad.w/2)) / (botPad.w/2);
         state.bvx = Math.max(-8, Math.min(8, state.bvx + rel * 3));
       }
 
-      // Scoring (top or bottom miss)
-      if(state.by < -10){
+      // Scoring (top or bottom miss) — only active after countdown
+      if(playingLive && state.by < -10){
         state.scoreBottom++;
         if(state.scoreBottom >= 5){ gameOver('YOU WIN'); return; }
         resetPaddles();
         resetBall(1);
       }
-      if(state.by > canvas.height + 10){
+      if(playingLive && state.by > canvas.height + 10){
         state.scoreTop++;
         if(state.scoreTop >= 5){ gameOver('YOU LOSE'); return; }
         resetPaddles();
@@ -535,12 +652,28 @@ const papers = document.getElementById('papers');
       // Paddles
       ctx.fillStyle = colFg; ctx.fillRect(topPad.x, topPad.y, topPad.w, topPad.h); ctx.fillRect(botPad.x, botPad.y, botPad.w, botPad.h);
       // Ball
-      ctx.fillStyle = colAccent; ctx.beginPath(); ctx.arc(state.bx, state.by, 4, 0, Math.PI*2); ctx.fill();
-      // Score near center line, left-aligned
-      ctx.fillStyle = colFg; ctx.font = Math.max(16, Math.round(canvas.width*0.035)) + 'px ui-monospace, monospace'; ctx.textAlign = 'left';
-      const midY = Math.round(canvas.height/2);
-      ctx.fillText(String(state.scoreTop), 16, midY - 10);
-      ctx.fillText(String(state.scoreBottom), 16, midY + 24);
+      ctx.fillStyle = colAccent; ctx.beginPath(); ctx.arc(state.bx, state.by, state.br, 0, Math.PI*2); ctx.fill();
+      // Scores on their respective sides; player's (bottom) slightly lower
+      ctx.fillStyle = colFg; ctx.font = Math.max(16, Math.round(canvas.width*0.05)) + 'px ui-monospace, monospace'; ctx.textAlign = 'center';
+      const yTopScore = Math.round(canvas.height * 0.22);
+      const yBotScore = Math.round(canvas.height * 0.78); // moved a little further down
+      ctx.fillText(String(state.scoreTop), canvas.width/2, yTopScore);
+      ctx.fillText(String(state.scoreBottom), canvas.width/2, yBotScore);
+
+      // Countdown overlay
+      if(!playingLive){
+        const secs = Math.ceil(Math.max(0, countdownUntil - now) / 1000);
+        const label = secs > 0 ? String(secs) : 'GO';
+        ctx.save();
+        ctx.fillStyle = 'rgba(0,0,0,0.35)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = colFg;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = Math.max(28, Math.round(canvas.width*0.18)) + 'px ui-monospace, monospace';
+        ctx.fillText(label, canvas.width/2, canvas.height/2);
+        ctx.restore();
+      }
 
       if(playing) rafId = requestAnimationFrame(step);
     }
