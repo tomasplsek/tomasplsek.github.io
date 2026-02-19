@@ -1,37 +1,35 @@
 /* Minimal IDE-like theme */
 :root{
-  /* Monokai Pro (Filter Octagon) — dark */
---bg:#11151c;
---panel:#11151c;
-  --panel-2:#11151c;
-  --text:#fcfcfa;
-  --muted:#727072;
-  --border:#403e41;
-  --accent:#78dce8;  /* cyan */
-  --accent-2:#a9dc76; /* green */
-  --accent-3:#fc9867; /* orange */
-  --profile-size:240px;
-  --toggle-size: 36px;
+  --bg:#0e1116; /* near-black */
+  --panel:#0b0e14; /* sidebar */
+  --panel-2:#11151c; /* editor bg darker */
+  --text:#e6edf3; /* foreground */
+  --muted:#8b949e;
+  --accent:#58a6ff;  /* blue */
+  --accent-2:#7ee787; /* green */
+  --accent-3:#ffa657; /* orange */
+  --border:#1f242d;
+  --profile-size:240px; /* photo size for layout calcs */
+  --toggle-size: 36px; /* desktop theme toggle button size */
   /* Gaps above/below the window. JS updates outer gap from titlebar height. */
-  --top-gap: 44px;
-  --bottom-gap: 32px;
-  --outer-gap-scale: 0.80;
-  --outer-gap: calc(var(--top-gap) * var(--outer-gap-scale));
+  --top-gap: 44px;      /* legacy fallback */
+  --bottom-gap: 32px;   /* legacy fallback */
+  --outer-gap-scale: 0.80; /* desktop: slightly smaller outer gaps than before */
+  --outer-gap: calc(var(--top-gap) * var(--outer-gap-scale)); /* default until JS runs */
 }
-/* Monokai Pro Light */
+/* Light theme overrides */
 :root[data-theme="light"]{
-  --bg:#faf8f5;
+  --bg:#f6f8fa;
   --panel:#ffffff;
-  --panel-2:#f3f0ed;
-  --text:#2d2a2e;
-  --muted:#6e6b6e;
-  --border:#d7d3cf;
-  /* Keep Monokai Pro accent hues */
-  --accent:#39bae6;  /* lighter cyan for light UI */
-  --accent-2:#a9dc76;
-  --accent-3:#fc9867;
+  --panel-2:#f6f8fa;
+  --text:#0b0e14;
+  --muted:#57606a;
+  --border:#d0d7de;
+  /* Light-mode green/orange accents */
+  --accent-2:#2e7d32; /* headers/links: rich green */
+  --accent-3:#d97706; /* dates: warm orange */
 }
-:root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#ffffff,#f0edeb)}
+:root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#f8fafc,#e9eef4)}
 :root[data-theme="light"] .window-controls .btn:hover{background:#e9eef4;color:#24292f;border-color:#7d8590}
 :root[data-theme="light"] .tab:hover{background:#edf2f7}
 /* Light mode: ensure my name in papers is bold and black */
@@ -53,7 +51,7 @@ body{
   display:flex;align-items:center;gap:.75rem;
   padding:.45rem .75rem .45rem .5rem; /* slightly smaller left indent */
   border-bottom:1px solid var(--border);
-  background:var(--panel);
+  background:linear-gradient(180deg,#0f131a,#0b0f14);
 }
 .titlebar .title{display:none} /* remove empty title spacer */
 /* When tabs are placed inside the titlebar */
@@ -76,7 +74,7 @@ body{
 /* GNOME-like window controls on the right */
 .window-controls{margin-left:auto;display:flex;gap:.35rem}
 .window-controls .btn{width:28px;height:28px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
-.window-controls .btn:hover{background:var(--panel);color:var(--text);border-color: var(--accent)}
+.window-controls .btn:hover{background:#141a22;color:var(--text);border-color: var(--accent)}
 .window-controls .btn.close:hover{color:#ff7b7b;border-color:#ff7b7b}
 /* simple tooltip */
 .window-controls .btn[data-tip]:hover::after{
@@ -111,10 +109,10 @@ body{
 
 .editor{display:flex;flex-direction:column;min-width:0;background:var(--panel-2)}
 .editor-header{
-  display:flex;gap:.25rem;padding:.4rem;border-bottom:1px solid var(--border);background:var(--panel);overflow:auto;user-select:none
+  display:flex;gap:.25rem;padding:.4rem;border-bottom:1px solid var(--border);background:#0f1319;overflow:auto;user-select:none
 }
 .tab{padding:.3rem .6rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);cursor:pointer;user-select:none;font-size:.95rem}
-.tab:hover{background:#322f34;color:var(--text)}
+.tab:hover{background:#0f141c;color:var(--text)}
 .tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
 
 .buffer{display:none;overflow:visible;flex:initial}
@@ -231,10 +229,6 @@ pre code{
 #about .md-view .md-h1:first-of-type{margin-top:.8rem}
 #papers .md-view .md-h1:first-of-type{margin-top:.8rem}
 #projects .md-view .md-h1:first-of-type{margin-top:.8rem}
-/* More separation between sections in About */
-#about .md-view .md-h2{margin-top:1.4rem; margin-bottom:.6rem}
-/* More space above the CV link in About */
-#about .md-view .cv-link{margin-top:2rem}
 .md-li{margin:0 0 .55rem .2rem}
 .md-li .bullet{color:var(--accent-3);margin-right:.55rem}
 .md-blank{height:.25rem}
@@ -245,10 +239,9 @@ body.md-ready .md-view{display:block}
 
 /* Extra right padding in about to avoid overlapping the photo */
 
-/* Links inside buffers — use a different accent than headers */
-.buffer a{color:var(--accent); text-decoration-color:var(--accent); text-underline-offset:2px; text-decoration-thickness:1.5px}
-.buffer a:visited{color:var(--accent)}
-.buffer a:hover{color:var(--accent-3); text-decoration:underline}
+/* Links inside buffers */
+.buffer a{color:var(--accent-2)}
+.buffer a:visited{color:var(--accent-2)}
 
 /* About layout: text and image side-by-side */
 #about .about-layout{display:flex;gap:3rem;align-items:flex-start}
@@ -265,8 +258,6 @@ body.md-ready .md-view{display:block}
 
 /* Bio-only width so photo can fit on the right; education/work return to full width */
 #about .md-view .md-bio{max-width:none;padding-right:0}
-/* Small gap between successive blocks inside bio-content */
-#about .md-view .md-bio .bio-content > [class^="md-"] + [class^="md-"]{margin-top:0.4rem}
 /* Extra space between first and second bio paragraphs (small) */
 #about .md-view .md-bio .bio-content .md-p:first-of-type{margin-bottom:0.5rem}
 
@@ -338,9 +329,9 @@ body.md-ready .md-view{display:block}
   .pong-wrap canvas{border-radius:0}
 }
 
-/* Links inside buffers — duplicate block (keep consistent) */
-.buffer a{color:var(--accent)}
-.buffer a:visited{color:var(--accent)}
+/* Links inside buffers */
+.buffer a{color:var(--accent-2)}
+.buffer a:visited{color:var(--accent-2)}
 
 /* Pong overlay */
 .pong-overlay{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:2000;padding:12px}
@@ -352,7 +343,5 @@ body.md-ready .md-view{display:block}
 .statusbar{
   display:flex;gap:.75rem;align-items:center;padding:.35rem .6rem;border-top:1px solid var(--border);background:var(--panel);color:var(--muted)
 }
-/* Light mode: make footer match page background */
-:root[data-theme="light"] .statusbar{background:var(--bg)}
 .statusbar .spacer{flex:1}
 

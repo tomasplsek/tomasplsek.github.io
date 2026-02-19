@@ -200,32 +200,28 @@ const papers = document.getElementById('papers');
       const bulletEl = li.querySelector('.bullet');
       const bulletHtml = bulletEl ? bulletEl.outerHTML : '';
       if(bulletEl) bulletEl.remove();
-      // Prepare HTML and text forms (to preserve links in title)
-      const tmpHtml = document.createElement('div');
-      tmpHtml.innerHTML = li.innerHTML;
-      const rawHtml = tmpHtml.innerHTML.trim();
-      const htmlParts = rawHtml.split(' — ');
-      const tmpText = document.createElement('div');
-      tmpText.innerHTML = li.innerHTML;
-      const rawText = (tmpText.textContent || '').trim();
-      const textParts = rawText.split(' — ');
-      if(htmlParts.length < 3 || textParts.length < 3){
-        // fallback: keep original
-        li.innerHTML = bulletHtml + rawHtml;
+      // get plain text of the rest
+      const tmp = document.createElement('div');
+      tmp.innerHTML = li.innerHTML;
+      const text = (tmp.textContent || '').trim();
+      const parts = text.split(' — ');
+      if(parts.length < 3){
+        // fallback: put back original with bullet
+        li.innerHTML = bulletHtml + escHtml(text);
         return;
       }
-      const dateText = textParts[0].trim();
-      const titleHtml = htmlParts[1].trim(); // may include <a>
-      const metaText = textParts.slice(2).join(' — ').trim();
-      let authors = metaText;
+      const date = parts[0].trim();
+      const title = parts[1].trim();
+      const meta = parts.slice(2).join(' — ').trim();
+      let authors = meta;
       let journal = '';
-      const semi = metaText.indexOf(';');
+      const semi = meta.indexOf(';');
       if(semi !== -1){
-        authors = metaText.slice(0, semi).trim();
-        journal = metaText.slice(semi + 1).trim();
+        authors = meta.slice(0, semi).trim();
+        journal = meta.slice(semi + 1).trim();
       }
       const metaLine = journal ? `${authors}, ${journal}` : authors;
-      const html = `${bulletHtml}<div class=\"pub-item\"><div class=\"pub-head\"><span class=\"pub-date\">${escHtml(dateText)}</span>: <span class=\"pub-title\">${titleHtml}</span></div><div class=\"pub-meta\">${escHtml(metaLine)}</div></div>`;
+      const html = `${bulletHtml}<div class=\"pub-item\"><div class=\"pub-head\"><span class=\"pub-date\">${escHtml(date)}</span>: <span class=\"pub-title\">${escHtml(title)}</span></div><div class=\"pub-meta\">${escHtml(metaLine)}</div></div>`;
       li.innerHTML = html;
       li.classList.add('pub-li');
     });
