@@ -150,7 +150,7 @@ const fmt = s => mdLinks(boldify(italicizeQuotes(esc(s)))) ;
       const a = p ? p.querySelector('a') : null;
       if(a){
         a.textContent = 'Download full CV (PDF)';
-        a.setAttribute('href','cv.pdf');
+a.setAttribute('href','files/cv.pdf');
       }
     }
     // Papers PDF label
@@ -159,7 +159,7 @@ const papers = document.getElementById('papers');
       const p2 = Array.from(papers.querySelectorAll('.md-view .md-p')).find(x => /List of publications \(PDF\)/i.test(x.textContent));
       if(p2){
         p2.classList.add('pubs-pdf-link');
-        p2.innerHTML = '<a href="list_of_publications.pdf" target="_blank" rel="noopener">List of publications (PDF)</a>';
+p2.innerHTML = '<a href="files/list_of_publications.pdf" target="_blank" rel="noopener">List of publications (PDF)</a>';
       }
     }
     // Global: open all local PDFs in new tab
@@ -734,7 +734,7 @@ else if(src.includes('beta.png')) caption = 'Interface of the Interactive beta m
       // Update MUNI icon based on theme; fall back gracefully if asset missing
       const muniImg = document.querySelector('.icon-btn.muni img');
       if(muniImg){
-const desired = theme === 'light' ? (muniImg.dataset.srcLight || 'figures/m-black.png') : (muniImg.dataset.srcDark || 'figures/m-white.png');
+const desired = theme === 'light' ? (muniImg.dataset.srcLight || 'files/m-black.png') : (muniImg.dataset.srcDark || 'files/m-white.png');
         if(muniImg.getAttribute('src') !== desired){
           const prev = muniImg.getAttribute('src');
           muniImg.onerror = () => { muniImg.onerror = null; muniImg.setAttribute('src', prev); };
