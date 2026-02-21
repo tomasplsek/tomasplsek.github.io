@@ -734,7 +734,7 @@ else if(src.includes('beta.png')) caption = 'Interface of the Interactive beta m
       // Update MUNI icon based on theme; fall back gracefully if asset missing
       const muniImg = document.querySelector('.icon-btn.muni img');
       if(muniImg){
-        const desired = theme === 'light' ? (muniImg.dataset.srcLight || 'm-black.png') : (muniImg.dataset.srcDark || 'm-white.png');
+const desired = theme === 'light' ? (muniImg.dataset.srcLight || 'figures/m-black.png') : (muniImg.dataset.srcDark || 'figures/m-white.png');
         if(muniImg.getAttribute('src') !== desired){
           const prev = muniImg.getAttribute('src');
           muniImg.onerror = () => { muniImg.onerror = null; muniImg.setAttribute('src', prev); };
