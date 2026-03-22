@@ -1,15 +1,15 @@
 /* Minimal IDE-like theme */
 :root{
-  /* Monokai Pro (Filter Octagon) — dark */
---bg:#11151c;
---panel:#11151c;
-  --panel-2:#11151c;
-  --text:#fcfcfa;
-  --muted:#727072;
-  --border:#403e41;
-  --accent:#78dce8;  /* cyan */
-  --accent-2:#a9dc76; /* green */
-  --accent-3:#fc9867; /* orange */
+  /* New dark palette (cool slate) */
+  --bg:#0f172a;
+  --panel:#111827;
+  --panel-2:#0b1220;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --border:#273449;
+  --accent:#38bdf8;   /* cyan-blue */
+  --accent-2:#22c55e; /* green */
+  --accent-3:#f59e0b; /* amber */
   --profile-size:240px;
   --toggle-size: 36px;
   /* Gaps above/below the window. JS updates outer gap from titlebar height. */
@@ -18,20 +18,19 @@
   --outer-gap-scale: 0.80;
   --outer-gap: calc(var(--top-gap) * var(--outer-gap-scale));
 }
-/* Monokai Pro Light */
+/* New light palette */
 :root[data-theme="light"]{
-  --bg:#faf8f5;
+  --bg:#f8fafc;
   --panel:#ffffff;
-  --panel-2:#f3f0ed;
-  --text:#2d2a2e;
-  --muted:#6e6b6e;
-  --border:#d7d3cf;
-  /* Keep Monokai Pro accent hues */
-  --accent:#39bae6;  /* lighter cyan for light UI */
-  --accent-2:#a9dc76;
-  --accent-3:#fc9867;
+  --panel-2:#eef2f7;
+  --text:#0f172a;
+  --muted:#475569;
+  --border:#cbd5e1;
+  --accent:#0284c7;
+  --accent-2:#16a34a;
+  --accent-3:#d97706;
 }
-:root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#ffffff,#f0edeb)}
+:root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#ffffff,#eaf1f8)}
 :root[data-theme="light"] .window-controls .btn:hover{background:#e9eef4;color:#24292f;border-color:#7d8590}
 :root[data-theme="light"] .tab:hover{background:#edf2f7}
 /* Light mode: ensure my name in papers is bold and black */
@@ -48,7 +47,7 @@ body{
   scrollbar-gutter: stable; /* modern browsers */
 }
 
-.ide-window{display:flex;flex-direction:column;width:60vw;min-width:760px;max-width:1200px;margin:0 auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);overflow:hidden;box-sizing:border-box;background:var(--panel-2)}
+.ide-window{display:flex;flex-direction:column;width:54vw;min-width:720px;max-width:1080px;margin:0 auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);overflow:hidden;box-sizing:border-box;background:var(--panel-2)}
 .titlebar{
   display:flex;align-items:center;gap:.75rem;
   padding:.45rem .75rem .45rem .5rem; /* slightly smaller left indent */
