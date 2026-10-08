@@ -1,0 +1,29 @@
+<h1>Publications</h1>
+<p class="pub-links">
+  <a href="{{ site.ads_url | escape }}" target="_blank" rel="noopener">Full list on NASA ADS</a>
+  <span aria-hidden="true">·</span>
+  <a href="files/list_of_publications.pdf" target="_blank">List of publications (PDF)</a>
+</p>
+{% for group in site.data.papers %}
+<h2>{{ group.section }}</h2>
+<ol class="pubs">
+  {%- for p in group.papers %}
+  <li class="pub">
+    <span class="pub-date">{{ p.date }}</span>
+    <div class="pub-body">
+      {% if p.url -%}
+      <a class="pub-title" href="{{ p.url }}" target="_blank" rel="noopener">{{ p.title | escape }}</a>
+      {%- else -%}
+      <span class="pub-title">{{ p.title | escape }}</span>
+      {%- endif %}
+      <div class="pub-authors">
+        {%- for a in p.authors -%}
+        <span class="au">{% unless forloop.first %}, {% endunless %}{{ a | escape | replace: "Plšek T.", '<strong class="me">Plšek T.</strong>' }}</span>
+        {%- endfor -%}
+      </div>
+      <div class="pub-venue">{{ p.venue | escape }}</div>
+    </div>
+  </li>
+  {%- endfor %}
+</ol>
+{% endfor %}

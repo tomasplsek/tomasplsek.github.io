@@ -1,0 +1,18 @@
+title: Tomáš Plšek
+description: Astrophysicist at Masaryk University, Brno — X-ray cavities, AGN feedback and machine learning for astronomy.
+url: https://tomasplsek.github.io
+author: Tomáš Plšek
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  # Headings get no auto ids: they would clash with the buffer ids (#about, #papers, #projects)
+  auto_ids: false
+
+exclude:
+  - old
+  - README.md
+
+# Full publication list on NASA ADS (linked from papers.md)
+ads_url: "https://ui.adsabs.harvard.edu/search/fq=%7B!type%3Daqp%20v%3D%24fq_database%7D&fq_database=(database%3Aastronomy)&q=pubdate%3A%5B2021-01%20TO%209999-12%5D%20author%3A(%22pl%C5%A1ek%2C%20tom%C3%A1%C5%A1%22)&sort=date%20desc%2C%20bibcode%20desc&p_=0"
