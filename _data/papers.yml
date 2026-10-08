@@ -1,0 +1,75 @@
+# Publications shown in papers.md.
+# Only published papers or papers with an arXiv version; each section has a list of papers.
+# Authors are listed individually so long lists can be collapsed and "Plšek T." highlighted.
+
+- section: Major contributions
+  papers:
+    - date: Jan 2024
+      title: "The infalling elliptical galaxy M89: the chemical composition of the AGN disturbed hot atmosphere"
+      url: https://academic.oup.com/mnras/article/528/2/1500/7513768
+      authors: [Kara S., Plšek T., Protušová K., Breuer J.-P., Werner N., Mernier F., Ercan E. N.]
+      venue: MNRAS 528, 1500–1516
+    - date: Nov 2023
+      title: "CADET: pipeline for detection of X-ray cavities in hot galactic and cluster atmospheres"
+      url: https://academic.oup.com/mnras/article-abstract/527/2/3315/7339785
+      authors: [Plšek T., Werner N., Topinka M., Simionescu A.]
+      venue: MNRAS 527, 3315–3346
+    - date: Sep 2022
+      title: "The relation between accretion rate and jet power in early-type galaxies with thermally unstable hot atmospheres"
+      url: https://academic.oup.com/mnras/article-abstract/517/3/3682/6731792
+      authors: [Plšek T., Werner N., Grossová R., Topinka M., Simionescu A., Allen S. W.]
+      venue: MNRAS 517, 3682–3710
+
+- section: Contributions
+  papers:
+    - date: Feb 2026
+      title: "X-ray line diagnostics of the multi-phase gas in the Centaurus cluster core with XRISM/Resolve"
+      url: https://arxiv.org/abs/2602.12814
+      authors: [Kondo M., Fukushima K., Suda K., Majumder A., Sato K., Matsushita K., Mernier F., Nakazawa K., Simionescu A., Breuer J.-P., Fukazawa Y., Fujimoto R., Hatsukade I., Hosogi K., Loewenstein M., Plšek T., Sun M., Urata M., Werner N., Yamasaki N. Y., Fujita Y.]
+      venue: arXiv:2602.12814
+    - date: Feb 2026
+      title: "Chemical composition and enrichment of the Centaurus cluster core seen by XRISM/Resolve"
+      url: https://www.aanda.org/10.1051/0004-6361/202557442
+      authors: [Mernier F., Fukushima K., Simionescu A., Kondo M., Majumder A., Plšek T., Werner N., Fujita Y., Sato K., Matsushita K., Loewenstein M., Mushotzky R., Breuer J.-P., Fujimoto R., Fukazawa Y., Hatsukade I., Nakazawa K., Urata M., Yamasaki N.]
+      venue: A&A 706, A86
+    - date: Nov 2025
+      title: "The thermodynamic structure and large-scale structure filament in MACS J0717.5+3745"
+      url: https://www.aanda.org/10.1051/0004-6361/202452908
+      authors: [Breuer J.-P., Werner N., Plšek T., Mernier F., Umetsu K., Simionescu A., Devlin M., Di Mascolo L., Dibblee-Barkman T., Dicker S., Mason B. S., Mroczkowski T., Romero C., Sarazin C. L., Sievers J.]
+      venue: A&A 703, A231
+    - date: Oct 2025
+      title: "Compact stellar systems hosting an intermediate-mass black hole: Magnetohydrodynamic study of inflow–outflow dynamics"
+      url: https://arxiv.org/abs/2504.21640
+      authors: [Labaj M., Ressler S. M., Zajaček M., Plšek T., Ripperda B., Peißker F.]
+      venue: A&A 702, A233
+    - date: Jul 2025
+      title: "X-ray investigation of the remarkable galaxy group Nest200047"
+      url: https://www.aanda.org/articles/aa/abs/2025/07/aa54682-25/aa54682-25.html
+      authors: [Majumder A., Simionescu A., Plšek T., Brienza M., Churazov E., Khabibullin I., Gastaldello F., Botteon A., Röttgering H., Brüggen M., Lyskova N., Rajpurohit K., Sunyaev R. A., Wise M. W.]
+      venue: A&A 699, A375
+    - date: Feb 2025
+      title: "MeerKAT discovery of gigahertz radio emission extending from Abell 3017 towards Abell 3016"
+      url: https://www.aanda.org/articles/aa/full_html/2025/02/aa53200-24/aa53200-24.html
+      authors: [Hu D., Werner N., Xu H., Zheng Q., Breuer J.-P., Wu L., Duchesne S. W., van Weeren R. J., Sun M., Zhang C., Johnston-Hollitt M., Shan H., Guo Q., Zhu Z., Wang J., Gu J., Zhao Y., Siew H., Mao J., Zhang Z., Plšek T.]
+      venue: A&A 694, A320
+    - date: Feb 2025
+      title: "The bulk motion of gas in the core of the Centaurus galaxy cluster"
+      url: https://www.nature.com/articles/s41586-024-08561-z
+      authors: [XRISM Collaboration (incl. Plšek T.)]
+      venue: Nature 638, 365–369
+    - date: Nov 2024
+      title: "ICECUBE AGN neutrino candidate PKS 1717+177: dark deflector bends nuclear jet"
+      url: https://academic.oup.com/mnras/article/535/3/2742/7906601
+      authors: [Britzen S., Kovačević A. B., Zajaček M., Popović L. Č., Pashchenko I. N., Kun E., Pánis R., Jaron F., Plšek T., Tursunov A., Stuchlík Z.]
+      venue: MNRAS 535, 2742–2762
+    - date: Oct 2023
+      title: "Ram-pressure stripped radio tail and two ULXs in the spiral galaxy HCG 97b"
+      url: https://academic.oup.com/mnras/article/527/1/1062/7328953
+      authors: [Hu D., Zajaček M., Werner N., Grossová R., Jáchym P., Roberts I. D., Ignesti A., Kenney J. D. P., Plšek T., Breuer J.-P., Shimwell T., Tasse C., Zhu Z., Wu L.]
+      venue: MNRAS 527, 1062–1080
+    - date: Feb 2022
+      title: "Very Large Array Radio Study of a Sample of Nearby X-Ray and Optically Bright Early-type Galaxies"
+      url: https://arxiv.org/abs/2111.02430
+      authors: [Grossová R., Werner N., Massaro F., Lakhchaura K., Plšek T., Gabányi K., Rajpurohit K., Canning R. E. A., Nulsen P., O’Sullivan E., Allen S. W., Fabian A.]
+      venue: ApJS 258, 30
+

@@ -1,143 +1,215 @@
+---
+# Content lives in _includes/*.md and _data/papers.yml; this file is the editor shell.
+---
+{%- capture about_intro %}{% include about-intro.md %}{% endcapture -%}
+{%- capture about_cv %}{% include about-cv.md %}{% endcapture -%}
+{%- capture papers_md %}{% include papers.md %}{% endcapture -%}
+{%- capture projects_md %}{% include projects.md %}{% endcapture -%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tomas Plsek</title>
-  <meta name="description" content="Personal website of Tomáš Plšek" />
-  <link rel="icon" type="image/png" href="CADET.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.title }} — Astrophysicist</title>
+  <meta name="description" content="{{ site.description }}">
+  <meta name="author" content="{{ site.author }}">
+  <link rel="canonical" href="{{ site.url }}/">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="{{ site.title }}">
+  <meta property="og:description" content="{{ site.description }}">
+  <meta property="og:url" content="{{ site.url }}/">
+  <meta property="og:image" content="{{ site.url }}/files/img_crop.jpeg">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#0e121a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f3f4f7" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/png" href="files/CADET.png">
+  <!-- Runs before first paint: avoids a flash of the wrong theme / sidebar state -->
+  <script>
+    (function(){
+      var d = document.documentElement;
+      var wide = matchMedia('(min-width: 1100px)').matches;
+      var sidebar = null;
+      d.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if(t === 'light' || t === 'dark') d.dataset.theme = t;
+        sidebar = localStorage.getItem('sidebar');
+      } catch(e) {}
+      // Narrow screens always start with the explorer closed (it overlays the text there)
+      if(!wide || sidebar === 'closed') d.classList.add('sidebar-closed');
+    })();
+  </script>
+  <link rel="preload" href="files/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="files/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme"></button>
-  <div class="ide-window">
-    <div class="titlebar">
-<div class="title"></div>
-      <div class="window-controls" role="group" aria-label="Window controls">
-<button class="btn min" aria-label="Minimize">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/></svg>
+  <div class="window" id="window">
+    <header class="titlebar">
+      <button class="icon-button js-only" id="toggle-sidebar" aria-controls="sidebar" aria-expanded="true" aria-label="Toggle explorer" title="Toggle explorer (Ctrl+B)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3H8a2 2 0 0 0-2 2v11"/><path d="M10 7h7l3 3v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/></svg>
+      </button>
+
+      <nav class="tabs" role="tablist" aria-label="Open files">
+        <a class="tab" role="tab" id="tab-about" href="#about" aria-controls="about" data-file="about">
+          <svg class="ficon ficon-md" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-md"/></svg>about.md
+        </a>
+        <a class="tab" role="tab" id="tab-papers" href="#papers" aria-controls="papers" data-file="papers">
+          <svg class="ficon ficon-md" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-md"/></svg>papers.md
+        </a>
+        <a class="tab" role="tab" id="tab-projects" href="#projects" aria-controls="projects" data-file="projects">
+          <svg class="ficon ficon-md" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-md"/></svg>projects.md
+        </a>
+      </nav>
+
+      <div class="titlebar-end">
+        <button class="icon-button theme-toggle js-only" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <button class="btn max" aria-label="Maximize">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
-        </button>
-        <button class="btn close" aria-label="Close">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
-        </button>
+        <div class="window-controls js-only" role="group" aria-label="Window controls">
+          <button class="icon-button wc-min" aria-label="Minimize" title="Minimize">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+          </button>
+          <button class="icon-button wc-max" aria-label="Maximize" title="Maximize">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+          </button>
+          <button class="icon-button wc-close" aria-label="Close" title="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>
+          </button>
+        </div>
       </div>
-    </div>
+    </header>
 
     <div class="workspace">
+      <aside class="sidebar" id="sidebar" aria-label="Explorer">
+        <div class="sidebar-section">
+          <h2 class="sidebar-title">Explorer</h2>
+          <div class="tree-root">
+            <svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>tomasplsek.github.io
+          </div>
+          <ul class="tree">
+            <li><a class="tree-item" href="#about" data-file="about"><svg class="ficon ficon-md" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-md"/></svg><span>about.md</span></a></li>
+            <li><a class="tree-item" href="#papers" data-file="papers"><svg class="ficon ficon-md" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-md"/></svg><span>papers.md</span></a></li>
+            <li><a class="tree-item" href="#projects" data-file="projects"><svg class="ficon ficon-md" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-md"/></svg><span>projects.md</span></a></li>
+            <li>
+              <div class="tree-folder"><svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>files</div>
+              <ul class="tree">
+                <li><a class="tree-item" href="files/cv.pdf" target="_blank"><svg class="ficon ficon-pdf" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-pdf"/></svg><span>cv.pdf</span></a></li>
+                <li><a class="tree-item" href="files/list_of_publications.pdf" target="_blank"><svg class="ficon ficon-pdf" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-pdf"/></svg><span>list_of_publications.pdf</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-section js-only">
+          <h2 class="sidebar-title">Outline</h2>
+          <ul class="outline" id="outline"></ul>
+        </div>
+      </aside>
+      <div class="sidebar-scrim" id="sidebar-scrim" hidden></div>
+
       <main class="editor">
-        <div class="editor-header">
-          <span class="tab active" data-target="about">about.md</span>
-          <span class="tab" data-target="papers">papers.md</span>
-          <span class="tab" data-target="projects">projects.md</span>
+        <div class="editor-bar">
+          <ol class="breadcrumbs" aria-label="Breadcrumbs">
+            <li>tomasplsek.github.io</li>
+            <li id="crumb-file">about.md</li>
+          </ol>
+          <button class="icon-button js-only" id="toggle-source" aria-pressed="false" title="Show markdown source (Ctrl+Shift+V)" aria-label="Show markdown source">
+            <svg class="i-code" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>
+            <svg class="i-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
 
-        <article class="buffer show" id="about">
-          <div class="profile">
-            <div class="profile-inner">
-<img src="files/img_crop.jpeg" alt="Photo of Tomáš Plšek">
-              <div class="contact-icons" aria-label="Contact links">
-                <!-- Personal email first (envelope) -->
-                <a class="icon-btn" href="mailto:plsek@protonmail.com" title="Personal email" aria-label="Personal email">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 2 7.6 5.3L19.6 7H4.4zm15.6 10V9.1l-7.2 5a1 1 0 0 1-1.2 0L4 9.1V17h16z"/></svg>
-                </a>
-                <!-- Work email second (briefcase icon) -->
-                <a class="icon-btn" href="mailto:plsek@physics.muni.cz" title="Work email" aria-label="Work email">
-                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-                    <path fill="currentColor" d="M9 4a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V10a3 3 0 0 0-3-3h-1V6a2 2 0 0 0-2-2H9zm0 3V6h6v1H9zm-3 4h12a1 1 0 0 1 1 1v1.2l-5.2 2.2a3 3 0 0 1-2.6 0L5 13.2V12a1 1 0 0 1 1-1z"/>
-                  </svg>
-                </a>
-                <a class="icon-btn" href="https://github.com/tomasplsek" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 .6a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.3-5.6-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.1s1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.2-1.5 3.3-1.2 3.3-1.2a4.3 4.3 0 0 1 .1 3.1 4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.9 5.7-5.6 6 .5.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.4 11.4 0 0 0 12 .6z"/></svg>
-                </a>
-<a class="icon-btn orcid" href="https://orcid.org/0000-0001-6411-3651" target="_blank" rel="noopener" title="ORCID" aria-label="ORCID">
-                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#7ee787"/><text x="8" y="16" font-size="9" font-family="ui-monospace, monospace" fill="#0b0e14">iD</text></svg>
-                </a>
-                <!-- MUNI icon: use provided asset as-is -->
-<a class="icon-btn muni" href="https://is.muni.cz/osoba/461281?lang=en" target="_blank" rel="noopener" title="MUNI profile" aria-label="MUNI profile">
-  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-    <rect x="3" y="3" width="18" height="18" rx="4" fill="#4ea1ff"/>
-    <text x="6.6" y="16" font-size="10" font-weight="700" font-family="ui-monospace, monospace" fill="#0b0e14">MU</text>
-  </svg>
-                </a>
-              </div>
+        <div class="editor-scroll" id="editor-scroll" tabindex="-1">
+          <article class="buffer" id="about" role="tabpanel" aria-labelledby="tab-about">
+            <div class="preview about">
+              <div class="about-intro">{{ about_intro | markdownify }}</div>
+              <aside class="profile" aria-label="Contact">
+                <img src="files/photo.webp" width="480" height="479" alt="Photo of Tomáš Plšek">
+                <div class="contact-icons">
+                  <a class="contact" href="mailto:plsek@protonmail.com" title="Personal email" aria-label="Personal email">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 2 7.6 5.3L19.6 7H4.4zm15.6 10V9.1l-7.2 5a1 1 0 0 1-1.2 0L4 9.1V17h16z"/></svg>
+                  </a>
+                  <a class="contact" href="mailto:plsek@physics.muni.cz" title="Work email" aria-label="Work email">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 4a2 2 0 0 0-2 2v1H6a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V10a3 3 0 0 0-3-3h-1V6a2 2 0 0 0-2-2H9zm0 3V6h6v1H9zm-3 4h12a1 1 0 0 1 1 1v1.2l-5.2 2.2a3 3 0 0 1-2.6 0L5 13.2V12a1 1 0 0 1 1-1z"/></svg>
+                  </a>
+                  <a class="contact" href="https://github.com/tomasplsek" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .6a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.6-1.3-5.6-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.1s1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.2-1.5 3.3-1.2 3.3-1.2a4.3 4.3 0 0 1 .1 3.1 4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.9 5.7-5.6 6 .5.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.4 11.4 0 0 0 12 .6z"/></svg>
+                  </a>
+                  <a class="contact contact-orcid" href="https://orcid.org/0000-0001-6411-3651" target="_blank" rel="noopener" title="ORCID" aria-label="ORCID">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#a6ce39"/><text x="12" y="15.6" text-anchor="middle" font-size="10" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="#fff">iD</text></svg>
+                  </a>
+                  <a class="contact contact-muni" href="https://is.muni.cz/osoba/461281?lang=en" target="_blank" rel="noopener" title="MUNI profile" aria-label="MUNI profile">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#0000dc"/><text x="12" y="15.8" text-anchor="middle" font-size="9.5" font-weight="700" font-family="IBM Plex Sans, sans-serif" fill="#fff">MU</text></svg>
+                  </a>
+                </div>
+              </aside>
+              <div class="about-cv">{{ about_cv | markdownify }}</div>
             </div>
-          </div>
-<pre><code># Tomáš Plšek
+            <pre class="source" hidden><code>{{ about_intro | append: about_cv | escape }}</code></pre>
+          </article>
 
-🎓 I am astrophysics PhD student at DTPA, Masaryk University in Brno, Czech Republic, working in the High Energy Astrophysics (HEA) group led by Prof. Norbert Werner. My research focuses on AGN feedback in giant elliptical galaxies, with a specialisation in the detection and characterisation of X-ray cavities in the hot atmospheres of these galaxies. I work extensively on image and spectral analysis of X-ray observations and on applying machine learning methods to astronomical data.
-<br>
-💻 Beyond astronomy & astrophysics, I genuinely enjoy coding, and in my free time, I like to play with home automation projects 🏠🔌. When I step away from the screen, I play football ⚽, ride my bike 🚴, and spend time gardening 🌱.
+          <article class="buffer" id="papers" role="tabpanel" aria-labelledby="tab-papers">
+            <div class="preview papers">{% include papers.html %}</div>
+            <pre class="source" hidden><code>{{ papers_md | escape }}</code></pre>
+          </article>
 
-## Education
-- since 09/2021 — PhD candidate, "Understanding the physics of hot galactic atmospheres" (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
-- 09/2019–06/2021 — MSc, "Relation between Bondi accretion and jets powers in giant elliptical galaxies" (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
-- 09/2016–06/2019 — BSc, "Dark matter modelling of clusters of galaxies" (supervisor: Filip Hroch), DTPA, Faculty of Science, Masaryk University
-
-## Work experience
-- since 03/2021 — Researcher, DTPA, Masaryk University: "Development of novel ML methods in astrophysics; data analysis"
-- 10/2019–12/2020 — Researcher, DPE, Masaryk University: "Plasma treatment of materials; optical emission spectroscopy; surface energy; data analysis"
-- 05/2018–09/2018 — Demonstrator, Vyškov Observatory: "Public astronomical demonstrations"
-
-[Download full CV (PDF)](files/cv.pdf)
-
-</code></pre>
-        </article>
-
-
-<article class="buffer" id="papers">
-<pre><code># Publications
-
-## Major Contributions
-- Jan 2024 — [The infalling elliptical galaxy M89: the chemical composition of the AGN disturbed hot atmosphere](https://academic.oup.com/mnras/article/528/2/1500/7513768) — Kara S., Plšek T., Protušová K., Breuer J.-P., Werner N., Mernier F., Ercan E. N.; MNRAS 528, 1500–1516
-- Nov 2023 — [CADET: pipeline for detection of X-ray cavities in hot galactic and cluster atmospheres](https://academic.oup.com/mnras/article-abstract/527/2/3315/7339785) — Plšek T., Werner N., Topinka M., Simionescu A.; MNRAS 527, 3315–3346
-- Sep 2022 — [The relation between accretion rate and jet power in early-type galaxies with thermally unstable hot atmospheres](https://academic.oup.com/mnras/article-abstract/517/3/3682/6731792) — Plšek T., Werner N., Grossová R., Topinka M., Simionescu A., Allen S. W.; MNRAS 517, 3682–3710
-
-## Contributions
-- Oct 2025 — [Compact stellar systems hosting an intermediate-mass black hole: Magnetohydrodynamic study of inflow–outflow dynamics](https://arxiv.org/abs/2504.21640) — Labaj M., Ressler S. M., Zajaček M., Plšek T., Ripperda B., Peißker F.; A&A 702, A233
-- Sep 2025 — [The thermodynamic structure and large-scale structure filament in MACS J0717.5+3745](https://arxiv.org/abs/2411.08103) — Breuer J.-P., Werner N., Plšek T., Mernier F., Umetsu K., Simionescu A., Devlin M., Di Mascolo L., Dibblee-Barkman T., Dicker S., Mason B. S., Mroczkowski T., Romero C., Sarazin C. L., Sievers J.; accepted to A&A
-- Jul 2025 — [X-ray investigation of the remarkable galaxy group Nest200047](https://www.aanda.org/articles/aa/abs/2025/07/aa54682-25/aa54682-25.html) — Majumder A., Simionescu A., Plšek T., Brienza M., Churazov E., Khabibullin I., Gastaldello F., Botteon A., Röttgering H., Brüggen M., Lyskova N., Rajpurohit K., Sunyaev R. A., Wise M. W.; A&A 699, A375
-- Feb 2025 — [MeerKAT discovery of gigahertz radio emission extending from Abell 3017 towards Abell 3016](https://www.aanda.org/articles/aa/full_html/2025/02/aa53200-24/aa53200-24.html) — Hu D., Werner N., Xu H., Zheng Q., Breuer J.-P., Wu L., Duchesne S. W., van Weeren R. J., Sun M., Zhang C., Johnston-Hollitt M., Shan H., Guo Q., Zhu Z., Wang J., Gu J., Zhao Y., Siew H., Mao J., Zhang Z., Plšek T.; A&A 694, A320
-- Feb 2025 — [The bulk motion of gas in the core of the Centaurus galaxy cluster](https://www.nature.com/articles/s41586-024-08561-z) — XRISM Collaboration [including Plšek T.]; Nature 638, 365–369
-- Nov 2024 — [ICECUBE AGN neutrino candidate PKS 1717+177: dark deflector bends nuclear jet](https://academic.oup.com/mnras/article/535/3/2742/7906601) — Britzen S., Kovačević A. B., Zajaček M., Popović L. Č., Pashchenko I. N., Kun E., Pánis R., Jaron F., Plšek T., Tursunov A., Stuchlík Z.; MNRAS 535, 2742–2762
-- Oct 2023 — [Ram-pressure stripped radio tail and two ULXs in the spiral galaxy HCG 97b](https://academic.oup.com/mnras/article/527/1/1062/7328953) — Hu D., Zajaček M., Werner N., Grossová R., Jáchym P., Roberts I. D., Ignesti A., Kenney J. D. P., Plšek T., Breuer J.-P., Shimwell T., Tasse C., Zhu Z., Wu L.; MNRAS 527, 1062–1080
-- Feb 2022 — [Very Large Array Radio Study of a Sample of Nearby X-Ray and Optically Bright Early-type Galaxies](https://arxiv.org/abs/2111.02430) — Grossová R., Werner N., Massaro F., Lakhchaura K., Plšek T., Gabányi K., Rajpurohit K., Canning R. E. A., Nulsen P., O’Sullivan E., Allen S. W., Fabian A.; ApJS 258, 30
-
-## Submitted publications
-- Nov 2025 — "IceCube candidate neutrino emitter PKS 1413+135 is gravitationally lensed on pc-scales" — Britzen S., Zajaček M., Fendt C., Best H., Jaron F., Pashchenko I. N., Plšek T., Seidel G.; submitted to MNRAS
-- Mar 2025 — "Gravitationally lensed supermassive binary black hole in IceCube AGN Neutrino candidate PKS 2233-148" — Britzen S., Kovačević A. B., Popović L. Č., Kun E., Zajaček M., Jaron F., Plšek T., Pashchenko I. N., Pánis R., Stuchlík Z.; submitted to A&A
-
-List of all publications (ADS)
-[List of publications (PDF)](files/list_of_publications.pdf)
-</code></pre>
-        </article>
-
-        <article class="buffer" id="projects">
-<pre><code># Projects
-
-## [Cavity Detection Tool (CADET)](https://github.com/tomasplsek/CADET)
-[![CADET architecture](files/architecture.png)](https://github.com/tomasplsek/CADET)
-
-CADET is a Python pipeline using machine learning to detect and size X-ray cavities in massive early-type galaxies and clusters observed with Chandra. It is released as the Python package [pycadet](https://pypi.org/project/pycadet/); the training and real-data application are described in [Plšek et al. 2024](https://academic.oup.com/mnras/article/527/2/3315/7339785). The pipeline provides an end‑to‑end workflow (data preparation, training/validation, and inference) and produces reproducible cavity catalogs with clear provenance.
-
-
-## [Interactive beta modelling](https://github.com/tomasplsek/Beta-modelling)
-[![Interactive beta modelling](files/beta.png)](https://github.com/tomasplsek/Beta-modelling)
-
-A Jupyter-based tool for fitting 2D surface-brightness distributions of galaxies with single or composite [beta models](https://ui.adsabs.harvard.edu/abs/1976A%26A....49..137C/abstract) and inspecting residuals. It lets you interactively adjust model parameters, visualize residual structure in real time, and export best‑fit values. Combines [Sherpa](https://cxc.cfa.harvard.edu/sherpa/) for modeling with [ipywidgets](https://github.com/jupyter-widgets/ipywidgets) for interactivity.
-
-</code></pre>
-        </article>
+          <article class="buffer" id="projects" role="tabpanel" aria-labelledby="tab-projects">
+            <div class="preview projects">{{ projects_md | markdownify }}</div>
+            <pre class="source" hidden><code>{{ projects_md | escape }}</code></pre>
+          </article>
+        </div>
       </main>
     </div>
 
     <footer class="statusbar">
-      <span class="spacer"></span>
-      <span>© Tomas Plsek</span>
+      <a class="sb-item sb-branch" href="https://github.com/tomasplsek/tomasplsek.github.io" target="_blank" rel="noopener" title="View source on GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9c0 5-6 3-11.5 8.5"/></svg>main
+      </a>
+      <button class="sb-item sb-palette js-only" id="open-palette" title="Go to file (Ctrl+P)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg><span class="sb-label">Go to file</span><kbd>Ctrl+P</kbd>
+      </button>
+      <span class="sb-spacer"></span>
+      <span class="sb-item" id="sb-position" hidden></span>
+      <span class="sb-item sb-optional" id="sb-mode">Preview</span>
+      <span class="sb-item sb-optional">UTF-8</span>
+      <span class="sb-item sb-optional">Markdown</span>
+      <span class="sb-item sb-optional">Updated {{ site.time | date: "%b %Y" }}</span>
+      <span class="sb-item">© {{ site.time | date: "%Y" }} {{ site.author }}</span>
     </footer>
   </div>
+
+  <!-- Command palette (Ctrl+P files, Ctrl+Shift+P / F1 commands) -->
+  <div class="palette" id="palette" hidden>
+    <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
+      <input id="palette-input" type="text" autocomplete="off" spellcheck="false"
+             role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list"
+             placeholder="Search files by name — type &gt; for commands">
+      <ul class="palette-list" id="palette-list" role="listbox" aria-label="Results"></ul>
+    </div>
+  </div>
+
+  <!-- Pong, launched by the close button -->
+  <div class="pong" id="pong" hidden>
+    <div class="pong-bar">
+      <span class="pong-title">pong</span>
+      <span class="pong-hint">first to 5 · mouse, touch or ←/→ · Esc to quit</span>
+      <button class="icon-button theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="icon-button" id="pong-quit" aria-label="Quit Pong" title="Quit (Esc)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>
+      </button>
+    </div>
+    <canvas id="pong-canvas"></canvas>
+  </div>
+
+  <!-- Shared file-type icons -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-md" viewBox="0 0 16 16"><path fill="currentColor" d="M1.5 11.5v-7h1.7L5 6.9l1.8-2.4h1.7v7H6.8V7.3L5 9.7 3.2 7.3v4.2zm10.5 0L9.6 8.7h1.6V4.5h1.6v4.2h1.6z"/></symbol>
+    <symbol id="i-pdf" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.3" d="M4 1.8h5.5L13 5.3v8.4a.5.5 0 0 1-.5.5h-8.5a.5.5 0 0 1-.5-.5V2.3a.5.5 0 0 1 .5-.5zM9.3 2v3.5H13"/><path fill="currentColor" d="M5.5 9h5v1.2h-5zm0 2h3.5v1.2H5.5z"/></symbol>
+  </svg>
 
   <script src="script.js"></script>
 </body>

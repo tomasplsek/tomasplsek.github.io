@@ -1,357 +1,400 @@
-/* Minimal IDE-like theme */
+/* ==========================================================================
+   tomasplsek.github.io — a personal site dressed as a text editor
+   Sections: fonts · tokens · page · window · titlebar · sidebar · editor ·
+             preview (markdown) · about · papers · projects · source view ·
+             statusbar · palette · pong · responsive
+   ========================================================================== */
+
+/* --- Fonts: IBM Plex, self-hosted (files/fonts, SIL OFL) ----------------- */
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400;font-display:swap;src:url(files/fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:400;font-display:swap;src:url(files/fonts/ibm-plex-sans-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Sans";font-style:italic;font-weight:400;font-display:swap;src:url(files/fonts/ibm-plex-sans-latin-400-italic.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Sans";font-style:italic;font-weight:400;font-display:swap;src:url(files/fonts/ibm-plex-sans-latin-ext-400-italic.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:600;font-display:swap;src:url(files/fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-weight:600;font-display:swap;src:url(files/fonts/ibm-plex-sans-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url(files/fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:400;font-display:swap;src:url(files/fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url(files/fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:500;font-display:swap;src:url(files/fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url(files/fonts/ibm-plex-mono-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url(files/fonts/ibm-plex-mono-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+/* --- Tokens ---------------------------------------------------------------
+   Every colour is light-dark(LIGHT, DARK). The active scheme follows the OS
+   unless the toggle pins one via <html data-theme="light|dark">.            */
 :root{
-  /* New dark palette (cool slate) */
-  --bg:#0f172a;
-  --panel:#111827;
-  --panel-2:#0b1220;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --border:#273449;
-  --accent:#38bdf8;   /* cyan-blue */
-  --accent-2:#22c55e; /* green */
-  --accent-3:#f59e0b; /* amber */
-  --profile-size:240px;
-  --toggle-size: 36px;
-  /* Gaps above/below the window. JS updates outer gap from titlebar height. */
-  --top-gap: 44px;
-  --bottom-gap: 32px;
-  --outer-gap-scale: 0.80;
-  --outer-gap: calc(var(--top-gap) * var(--outer-gap-scale));
+  color-scheme: light dark;
+
+  --desk:        light-dark(#e3e6eb, #07090e);  /* page behind the window */
+  --chrome:      light-dark(#f3f4f7, #0e121a);  /* titlebar, sidebar, statusbar */
+  --chrome-hover:light-dark(#e7e9ee, #181d28);
+  --editor:      light-dark(#ffffff, #131823);  /* the document surface */
+  --line:        light-dark(#dadde3, #232a38);
+  --line-soft:   light-dark(#eceef2, #1b212d);
+  --text:        light-dark(#2a303b, #cfd6e2);
+  --strong:      light-dark(#0f131a, #f1f4f9);
+  --muted:       light-dark(#5f6878, #8b95a7);
+  --faint:       light-dark(#959dab, #566174);
+  --accent:      light-dark(#2456d3, #82aaff);  /* links, focus, active tab */
+  --accent-soft: light-dark(#e7eefc, #1c2640);
+  --on-accent:   light-dark(#ffffff, #0b0f17);
+  --warm:        light-dark(#a35208, #ecb36b);  /* dates, markdown markers */
+  --danger:      light-dark(#cf3a3a, #ff7b7b);
+  --shadow:      light-dark(rgb(25 35 55 / .16), rgb(0 0 0 / .55));
+
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Swap to var(--font-mono) for an all-monospace document */
+  --font-prose: var(--font-sans);
+
+  --gap: clamp(12px, 3.2vmin, 40px);  /* space around the window */
+  --titlebar-h: 42px;
+  --statusbar-h: 26px;
+  --sidebar-w: 248px;
+  --measure: 46rem;                    /* max width of the document column */
+  --radius: 10px;
 }
-/* New light palette */
-:root[data-theme="light"]{
-  --bg:#f8fafc;
-  --panel:#ffffff;
-  --panel-2:#eef2f7;
-  --text:#0f172a;
-  --muted:#475569;
-  --border:#cbd5e1;
-  --accent:#0284c7;
-  --accent-2:#16a34a;
-  --accent-3:#d97706;
-}
-:root[data-theme="light"] .titlebar{background:linear-gradient(180deg,#ffffff,#eaf1f8)}
-:root[data-theme="light"] .window-controls .btn:hover{background:#e9eef4;color:#24292f;border-color:#7d8590}
-:root[data-theme="light"] .tab:hover{background:#edf2f7}
-/* Light mode: ensure my name in papers is bold and black */
-:root[data-theme="light"] #papers .md-view .me{color:var(--text);font-weight:800}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+
+/* --- Page ----------------------------------------------------------------- */
+*,*::before,*::after{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0; background:var(--bg); color:var(--text);
-  font:15px/1.58 "JetBrains Mono","IBM Plex Mono","Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;
-  letter-spacing:.005em;
-  height:auto; min-height:100vh; box-sizing:border-box; padding-block: var(--outer-gap);
-  /* Prevent layout shift when vertical scrollbar appears/disappears */
-  overflow-y: scroll; /* fallback, always reserve space */
-  scrollbar-gutter: stable; /* modern browsers */
+  margin:0;
+  display:grid;
+  grid-template:minmax(0,1fr) / minmax(0,1fr);   /* tracks never grow past the viewport */
+  padding:var(--gap);
+  background:
+    radial-gradient(1100px 520px at 50% -12%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 70%),
+    var(--desk);
+  color:var(--text);
+  font:14px/1.5 var(--font-mono);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:hidden;
 }
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+svg{flex:none}
+[hidden]{display:none !important}
+/* Controls that need JavaScript are hidden without it (the content still works) */
+html:not(.js) .js-only{display:none !important}
 
-.ide-window{display:flex;flex-direction:column;width:54vw;min-width:720px;max-width:1080px;margin:0 auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4);overflow:hidden;box-sizing:border-box;background:var(--panel-2)}
+.icon-button{
+  display:inline-grid;place-items:center;
+  width:30px;height:30px;padding:0;
+  border:0;border-radius:6px;background:transparent;color:var(--muted);
+  cursor:pointer;
+}
+.icon-button:hover{background:var(--chrome-hover);color:var(--strong)}
+.icon-button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* --- Window --------------------------------------------------------------- */
+.window{
+  place-self:center;
+  width:min(1240px, 100%);
+  height:min(100%, 940px);
+  display:grid;
+  grid-template-rows:var(--titlebar-h) minmax(0,1fr) var(--statusbar-h);
+  grid-template-columns:minmax(0,1fr);   /* the tab strip scrolls instead of widening the window */
+  background:var(--editor);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:0 24px 70px var(--shadow), 0 2px 6px var(--shadow);
+  overflow:hidden;
+}
+.window.is-maximized{position:fixed;inset:0;width:auto;height:auto;border-radius:0;border:0;z-index:10}
+/* Minimised: collapse to the titlebar and drop to the bottom, like a docked window */
+.window.is-minimized{height:var(--titlebar-h);grid-template-rows:var(--titlebar-h);place-self:end center;width:min(560px,100%)}
+.window.is-minimized .workspace,.window.is-minimized .statusbar{display:none}
+.window.is-closed{visibility:hidden}
+
+/* --- Titlebar + tabs ------------------------------------------------------ */
 .titlebar{
-  display:flex;align-items:center;gap:.75rem;
-  padding:.45rem .75rem .45rem .5rem; /* slightly smaller left indent */
-  border-bottom:1px solid var(--border);
-  background:var(--panel);
+  display:flex;align-items:stretch;gap:2px;
+  padding:0 6px;
+  background:var(--chrome);
+  border-bottom:1px solid var(--line);
+  user-select:none;
 }
-.titlebar .title{display:none} /* remove empty title spacer */
-/* When tabs are placed inside the titlebar */
-.titlebar .editor-header{display:flex;align-items:center;gap:.45rem;padding:0;margin:0;border:0;background:transparent;flex:0 1 auto;overflow:auto;max-width:100%}
-/* Classic tab look: no bottom border, top corners rounded */
-.titlebar .tab{position:relative;padding:.36rem .62rem .24rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;background:transparent;color:var(--muted);font-size:1rem}
-.titlebar .tab:hover{background:#0f141c;color:var(--text)}
-/* Active tab: restore original inset underline at the bottom of the tab */
-.titlebar .tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
+.titlebar > .icon-button{align-self:center}
+.tabs{position:relative;display:flex;align-items:stretch;min-width:0;overflow-x:auto;scrollbar-width:none;margin-left:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  position:relative;flex:none;
+  display:flex;align-items:center;gap:8px;
+  padding:0 16px 0 13px;
+  color:var(--muted);text-decoration:none;font-size:13px;
+  border-right:1px solid var(--line);
+  margin-bottom:-1px;      /* active tab covers the titlebar's bottom border */
+}
+.tab:first-child{border-left:1px solid var(--line)}
+.tab:hover{color:var(--strong);background:var(--chrome-hover)}
+.tab[aria-selected="true"]{color:var(--strong);background:var(--editor)}
+.tab[aria-selected="true"]::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--accent)}
+.titlebar-end{margin-left:auto;display:flex;align-items:center;gap:2px;padding-left:8px}
+.window-controls{display:flex;gap:2px;margin-left:6px;padding-left:8px;border-left:1px solid var(--line)}
+.wc-close:hover{background:color-mix(in srgb, var(--danger) 16%, transparent);color:var(--danger)}
 
-/* Theme toggle button */
-.theme-toggle{position:fixed;top:8px;right:8px;z-index:1000;width:var(--toggle-size);height:var(--toggle-size);border:1px solid var(--border);border-radius:8px;background:var(--panel);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
-.theme-toggle svg{width:20px;height:20px}
-/* When placed inline with heading on mobile */
-.theme-toggle.in-heading{position:static;width:32px;height:32px}
-.title{color:var(--muted);font-size:.9rem}
-.title strong{color:var(--accent)}
-
-/* GNOME-like window controls on the right */
-.window-controls{margin-left:auto;display:flex;gap:.35rem}
-.window-controls .btn{width:28px;height:28px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
-.window-controls .btn:hover{background:var(--panel);color:var(--text);border-color: var(--accent)}
-.window-controls .btn.close:hover{color:#ff7b7b;border-color:#ff7b7b}
-/* simple tooltip */
-.window-controls .btn[data-tip]:hover::after{
-  content: attr(data-tip);
-  position:absolute;bottom:-30px;right:0;white-space:nowrap;
-  background:#0b0f14;color:var(--text);border:1px solid var(--border);border-radius:6px;
-  padding:.2rem .4rem;font-size:.75rem;opacity:.95
+/* Theme toggle shows the icon of the scheme you'd switch to */
+.theme-toggle .i-sun{display:none}
+:root[data-theme="dark"] .theme-toggle .i-sun{display:block}
+:root[data-theme="dark"] .theme-toggle .i-moon{display:none}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-toggle .i-sun{display:block}
+  :root:not([data-theme="light"]) .theme-toggle .i-moon{display:none}
 }
 
-/* window state classes */
-.ide-window.minimized .workspace,.ide-window.minimized .statusbar{display:none}
-/* Keep window size/position on minimize */
-.ide-window.maximized{width:calc(100vw - 4 * var(--toggle-size));max-width:calc(100vw - 4 * var(--toggle-size));margin:0 auto;box-shadow:0 16px 40px rgba(0,0,0,.55)}
-.ide-window.closed{display:none}
-.traffic{display:flex;gap:.35rem}
-.dot{width:.8rem;height:.8rem;border-radius:999px;display:inline-block;opacity:.9}
-.dot.red{background:#ff5f56}.dot.yellow{background:#ffbd2e}.dot.green{background:#27c93f}
+/* File-type icons */
+.ficon{width:15px;height:15px}
+.ficon-md{color:var(--accent)}
+.ficon-pdf{color:var(--danger)}
 
-.workspace{display:block;min-height:0}
+/* --- Workspace + sidebar -------------------------------------------------- */
+.workspace{position:relative;display:flex;min-height:0}
 .sidebar{
-  width:240px;background:var(--panel);
-  border-right:1px solid var(--border);padding:.75rem .5rem;overflow:auto
+  flex:0 0 var(--sidebar-w);
+  display:flex;flex-direction:column;gap:14px;
+  padding:10px 0 16px;
+  background:var(--chrome);
+  border-right:1px solid var(--line);
+  overflow-y:auto;
+  font-size:13px;
+  user-select:none;
 }
-.section-title{font-size:.72rem;color:var(--muted);letter-spacing:.08em;margin:.2rem .5rem .4rem}
-.filetree{list-style:none;margin:0;padding:0}
-.filetree li{
-  cursor:pointer;padding:.35rem .5rem;border-radius:6px;display:flex;align-items:center;gap:.5rem;color:var(--text)
+.sidebar-closed .sidebar{display:none}
+.sidebar-title{margin:0 0 6px;padding:0 16px;font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.tree-root,.tree-folder{display:flex;align-items:center;gap:4px;padding:3px 10px;color:var(--strong);font-weight:500}
+.tree-folder{padding-left:24px;font-weight:400;color:var(--text)}
+.chev{width:14px;height:14px;fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tree,.outline{list-style:none;margin:0;padding:0}
+.tree .tree .tree-item{padding-left:46px}
+.tree-item,.outline a{
+  display:flex;align-items:center;gap:8px;
+  padding:3px 12px 3px 30px;
+  color:var(--text);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.filetree li:hover{background:rgba(88,166,255,.08)}
-.filetree li.active{background:linear-gradient(90deg, rgba(88,166,255,.18), rgba(126,231,135,.14));color:var(--accent)}
-.icon{opacity:.7}
+.tree-item > span,.outline a > span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.tree-item:hover,.outline a:hover{background:var(--chrome-hover);color:var(--strong)}
+.tree-item[aria-current="page"]{background:var(--accent-soft);color:var(--strong);box-shadow:inset 2px 0 var(--accent)}
+.outline a{padding-left:16px;color:var(--muted)}
+.outline .lvl-2 a{padding-left:30px}
+.outline a.is-active{color:var(--strong)}
+.outline a::before{content:"#";color:var(--warm);opacity:.8;font-size:12px;width:10px;flex:none}
+.outline .lvl-2 a::before{content:"##";width:18px}
+.sidebar-scrim{display:none}
 
-.editor{display:flex;flex-direction:column;min-width:0;background:var(--panel-2)}
-.editor-header{
-  display:flex;gap:.25rem;padding:.4rem;border-bottom:1px solid var(--border);background:var(--panel);overflow:auto;user-select:none
+/* --- Editor --------------------------------------------------------------- */
+.editor{flex:1;min-width:0;display:flex;flex-direction:column;background:var(--editor)}
+.editor-bar{
+  flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  height:32px;padding:0 8px 0 18px;
+  border-bottom:1px solid var(--line-soft);
+  font-size:12.5px;color:var(--muted);
 }
-.tab{padding:.3rem .6rem;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);cursor:pointer;user-select:none;font-size:.95rem}
-.tab:hover{background:#322f34;color:var(--text)}
-.tab.active{color:var(--text);background:var(--panel);box-shadow:inset 0 -2px 0 0 var(--accent)}
+.breadcrumbs{display:flex;gap:6px;list-style:none;margin:0;padding:0;min-width:0;white-space:nowrap;overflow:hidden}
+.breadcrumbs li + li::before{content:"›";margin-right:6px;color:var(--faint)}
+.breadcrumbs li:last-child{color:var(--text)}
+#toggle-source .i-eye{display:none}
+#toggle-source[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft)}
+#toggle-source[aria-pressed="true"] .i-eye{display:block}
+#toggle-source[aria-pressed="true"] .i-code{display:none}
 
-.buffer{display:none;overflow:visible;flex:initial}
-.buffer.show{display:block}
+.editor-scroll{flex:1;min-height:0;overflow-y:auto;scroll-padding-top:16px;outline:none;scrollbar-color:var(--line) transparent}
+.js .buffer:not(.is-active){display:none}
+.buffer + .buffer{border-top:1px solid var(--line)}   /* no-JS: files stacked */
+.js .buffer + .buffer{border-top:0}
 
-/* Markdown-ish code block aesthetic */
-pre{margin:0;height:auto;overflow:visible}
-pre code{
-  display:block;white-space:pre-wrap;word-break:break-word;
-  padding:1rem 1.25rem;color:var(--text);
+/* --- Preview: rendered markdown ------------------------------------------- */
+.preview{
+  max-width:var(--measure);
+  margin:0 auto;
+  padding:clamp(20px, 4vw, 44px) clamp(18px, 4vw, 48px) 64px;
+  font:16.5px/1.7 var(--font-prose);
+  color:var(--text);
 }
-
-.profile{float:right;margin:.2rem 1.6rem .6rem 1.4rem;padding:8px 8px 8px 8px}
-.profile img{width:var(--profile-size);height:var(--profile-size);border-radius:8px;object-fit:cover;border:1px solid var(--border);box-shadow:0 4px 18px rgba(0,0,0,.35);display:block;margin:24px auto 8px auto}
-/* Inner wrapper to create strong L/R space around the photo + icons (desktop) */
-.profile-inner{padding-inline:clamp(6px, 1.2vw, 20px); width:auto}
-/* Reduce right inner padding next to text column */
-.profile-inner{padding-inline-end:clamp(2px, 0.6vw, 10px)}
-
-/* Contact icons */
-.contact-icons{display:flex;gap:.6rem;align-items:center;padding:0 1.25rem;margin:0}
-.icon-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--panel);color:#ffffff;text-decoration:none}
-.icon-btn img{display:block;width:22px;height:22px}
-/* Keep icons white on hover; only the border uses accent */
-.icon-btn:hover{border-color:var(--accent);color:#ffffff}
-/* Keep icons white on hover; only the border uses accent */
-.icon-btn:hover{border-color:var(--accent);color:#ffffff}
-/* Force SVG glyphs to white for generic icons (not ORCID/MUNI) */
-.icon-btn:not(.orcid):not(.muni) svg{fill:#ffffff;stroke:#ffffff}
-.icon-btn:not(.orcid):not(.muni) svg path,
-.icon-btn:not(.orcid):not(.muni) svg rect,
-.icon-btn:not(.orcid):not(.muni) svg circle,
-.icon-btn:not(.orcid):not(.muni) svg line{fill:#ffffff;stroke:#ffffff}
-
-/* Light mode overrides: email and GitHub icons should be black */
-:root[data-theme="light"] .contact-icons a[href^="mailto:"]{color:var(--text)}
-:root[data-theme="light"] .contact-icons a[href*="github.com"]{color:var(--text)}
-:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg,
-:root[data-theme="light"] .contact-icons a[href*="github.com"] svg{fill:var(--text);stroke:var(--text)}
-:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg path,
-:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg rect,
-:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg circle,
-:root[data-theme="light"] .contact-icons a[href^="mailto:"] svg line,
-:root[data-theme="light"] .contact-icons a[href*="github.com"] svg path,
-:root[data-theme="light"] .contact-icons a[href*="github.com"] svg rect,
-:root[data-theme="light"] .contact-icons a[href*="github.com"] svg circle,
-:root[data-theme="light"] .contact-icons a[href*="github.com"] svg line{fill:var(--text);stroke:var(--text)}
-:root[data-theme="light"] .contact-icons a[href^="mailto:"].icon-btn:hover,
-:root[data-theme="light"] .contact-icons a[href*="github.com"].icon-btn:hover{color:var(--text);border-color:var(--accent)}
-
-/* Place icons on same line as name (right aligned) */
-#about .md-view .md-h1{display:flex;align-items:center}
-#about .md-view .md-h1 .contact-icons{display:none}
-/* Icons inside profile card */
-.profile .contact-icons{margin-top:18px;display:flex;gap:.6rem;align-items:center;justify-content:center;padding:0}
-/* Spacing for CV link paragraph */
-.md-view .cv-link{margin-top:24px}
-.md-view .cv-link a{font-weight:700}
-/* Papers PDF link styling */
-.md-view .pubs-pdf-link{margin-top:12px}
-.md-view .pubs-pdf-link a{font-weight:700}
-/* ADS link styling */
-.md-view .ads-link{margin-top:18px;margin-bottom:10px}
-.md-view .ads-link a{font-weight:700}
-/* Emphasize my name in papers */
-#papers .md-view .me{font-weight:800;color:#ffffff}
-
-/* Publications enhanced layout */
-#papers .md-view .md-li{display:flex;align-items:flex-start;gap:.55rem}
-#papers .md-view .md-li .bullet{color:var(--accent-3);margin-top:.45rem}
-#papers .md-view .pub-item{flex:1;padding:.5rem .75rem;background:transparent}
-#papers .md-view .pub-head{font-weight:700}
-#papers .md-view .pub-date{color:var(--accent-3)}
-#papers .md-view .pub-meta{margin-top:.25rem}
-/* Slightly tighter spacing between papers list items */
-#papers .md-view .md-li{margin:0 0 .35rem .2rem}
-#papers .md-view .pub-li{margin-bottom:.35rem}
-
-/* About: colored dates in bullet lists */
-#about .md-view .about-date{color:var(--accent-3)}
-
-/* Projects: figure floated right at ~40% width; stack on mobile */
-#projects .md-img{float:right;width:min(40%, 480px);margin:.2rem 0 .6rem 3.2rem}
-#projects .md-img img{display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.28);background:var(--panel)}
-#projects .md-img .caption{margin-top:6px;font-size:.9rem;color:var(--muted);opacity:.95;text-align:right}
-/* Dark mode: increase caption contrast */
-:root:not([data-theme="light"]) #projects .md-img .caption{color:var(--text);opacity:.8}
-/* Make beta modelling figure wider on desktop */
-#projects .md-img.beta-fig{width:min(60%, 680px)}
-/* Desktop: a bit more breathing room below the last project */
-@media (min-width: 901px){
-  #projects .md-view{padding-bottom:2.5rem}
+.preview h1,.preview h2{font-family:var(--font-mono);color:var(--strong);letter-spacing:-.01em;text-wrap:balance}
+.preview h1{font-size:1.85rem;font-weight:600;line-height:1.25;margin:0 0 1.1rem}
+.preview h2{font-size:1.2rem;font-weight:600;line-height:1.35;margin:2.4rem 0 .9rem;padding-top:.2rem}
+/* Markdown heading markers, as an editor would show them */
+.preview h1::before,.preview h2::before{color:var(--warm);font-weight:400;opacity:.75}
+.preview h1::before{content:"# "}
+.preview h2::before{content:"## "}
+.preview h2 a{color:inherit;text-decoration-color:color-mix(in srgb, var(--accent) 55%, transparent)}
+.preview h2 a:hover{color:var(--accent)}
+.preview p{margin:0 0 1rem}
+.preview strong{color:var(--strong);font-weight:600}
+.preview a{text-underline-offset:3px;text-decoration-thickness:1px}
+.preview a:hover{text-decoration-thickness:2px}
+.preview ul{list-style:none;margin:0 0 1rem;padding:0}
+.preview ul > li{position:relative;padding-left:1.5rem;margin:0 0 .55rem}
+.preview ul > li::before{content:"-";position:absolute;left:.3rem;font-family:var(--font-mono);color:var(--warm)}
+/* Leading **date** in list items */
+.preview li > strong:first-child{font:500 .86em var(--font-mono);color:var(--warm);white-space:nowrap}
+.preview .cta{
+  display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.45rem .9rem;
+  font:500 14px var(--font-mono);text-decoration:none;
+  border:1px solid var(--line);border-radius:6px;background:var(--chrome);
 }
-@media (max-width: 900px){
-  #projects .md-img,
-  #projects .md-img.beta-fig{float:none;width:100%;max-width:100%;margin:.5rem 0}
-  /* Extra space when image follows a paragraph */
-#projects .md-p + .md-img{margin-top:1.1rem}
+.preview .cta::before{content:"↓"}
+.preview .cta:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+/* --- About ---------------------------------------------------------------- */
+.preview.about{
+  max-width:calc(var(--measure) + 15rem);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"intro profile" "cv cv";
+  column-gap:2.75rem;
 }
-
-/* Rendered markdown-like view (enhanced) */
-.md-view{display:none;padding:1rem 2.25rem;color:var(--text);
-  font-family:"JetBrains Mono","IBM Plex Mono","Fira Code","Ubuntu Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size:19px;line-height:1.6
+.about-intro{grid-area:intro;min-width:0}
+.about-cv{grid-area:cv;min-width:0}
+.profile{grid-area:profile;width:216px;padding-top:.4rem}
+.profile img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:12px;border:1px solid var(--line);box-shadow:0 8px 24px var(--shadow)}
+.contact-icons{display:flex;justify-content:space-between;margin-top:14px}
+.contact{
+  display:grid;place-items:center;width:36px;height:36px;
+  border:1px solid var(--line);border-radius:8px;background:var(--chrome);color:var(--text);
 }
-.md-h1{font-weight:750;font-size:2rem;color:var(--accent-2);margin:.1rem 0 .6rem}
-.md-h2{font-weight:750;font-size:1.6rem;color:var(--accent-2);margin:.85rem 0 .5rem}
-.md-p{margin:0 0 .25rem;color:var(--text)}
+.contact:hover{border-color:var(--accent);color:var(--accent)}
+.contact svg{width:20px;height:20px}
 
-/* slight left padding for headings and paragraphs */
-.md-h1,.md-h2,.md-p{padding-left:.5rem}
-
-/* Match top padding of first H1 across sections */
-#about .md-view .md-h1:first-of-type{margin-top:.8rem}
-#papers .md-view .md-h1:first-of-type{margin-top:.8rem}
-#projects .md-view .md-h1:first-of-type{margin-top:.8rem}
-/* More separation between sections in About */
-#about .md-view .md-h2{margin-top:1.4rem; margin-bottom:.6rem}
-/* More space above the CV link in About */
-#about .md-view .cv-link{margin-top:2rem}
-.md-li{margin:0 0 .55rem .2rem}
-.md-li .bullet{color:var(--accent-3);margin-right:.55rem}
-.md-blank{height:.25rem}
-
-/* Show enhanced view after JS render */
-body.md-ready pre{display:none}
-body.md-ready .md-view{display:block}
-
-/* Extra right padding in about to avoid overlapping the photo */
-
-/* Links inside buffers — use a different accent than headers */
-.buffer a{color:var(--accent); text-decoration-color:var(--accent); text-underline-offset:2px; text-decoration-thickness:1.5px}
-.buffer a:visited{color:var(--accent)}
-.buffer a:hover{color:var(--accent-3); text-decoration:underline}
-
-/* About layout: text and image side-by-side */
-#about .about-layout{display:flex;gap:3rem;align-items:flex-start}
-#about .about-text{flex:1;min-width:0}
-/* When using flex layout, don't float the profile and add top padding */
-#about .about-layout .profile{float:none;margin:18px 0 24px 0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;box-sizing:border-box;flex:0 0 auto}
-
-/* Align md-bio text with profile side-by-side */
-#about .md-view .md-bio{display:grid;grid-template-columns:1fr auto;column-gap:2rem;align-items:start}
-#about .md-view .md-bio .bio-content{min-width:0}
-/* Reduce extra padding/margins in profile and image when placed inside bio */
-#about .md-view .md-bio .profile{float:none;margin:2px 0 10px 0;padding:0 6px 4px}
-#about .md-view .md-bio .profile img{margin:4px auto 6px auto}
-
-/* Bio-only width so photo can fit on the right; education/work return to full width */
-#about .md-view .md-bio{max-width:none;padding-right:0}
-/* Small gap between successive blocks inside bio-content */
-#about .md-view .md-bio .bio-content > [class^="md-"] + [class^="md-"]{margin-top:0.4rem}
-/* Extra space between first and second bio paragraphs (small) */
-#about .md-view .md-bio .bio-content .md-p:first-of-type{margin-bottom:0.5rem}
-
-/* Responsive: stack image below content on narrow screens */
-@media (max-width: 900px){
-  /* Center container and allow narrow widths */
-  .ide-window{width:96vw;min-width:0;margin:0 auto;border-radius:8px}
-  .ide-window.maximized{width:96vw;max-width:none}
-  .workspace{flex-direction:column}
-
-  /* Allow horizontal scroll for tabs inside titlebar on narrow screens */
-  .titlebar .editor-header{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .titlebar .tab{flex:0 0 auto}
-
-  /* Tabs become horizontally scrollable with touch momentum */
-  .editor-header{overflow-x:auto;-webkit-overflow-scrolling:touch;gap:.35rem}
-  .tab{flex:0 0 auto;padding:.45rem .75rem;font-size:.98rem}
-
-  /* Name + icons can wrap; icons drop to next line under name if needed */
-  #about .md-view .md-h1{flex-wrap:wrap;row-gap:.4rem}
-  #about .md-view .md-h1 .contact-icons{margin-left:0}
-
-  /* Photo stacks and centers on mobile; icons appear below image */
-  #about .about-layout{display:grid !important; grid-template-columns: 1fr; grid-template-areas: 
-    "text"
-    "profile"; gap:.8rem}
-  #about .about-layout > .about-text{grid-area:text !important}
-  #about .about-layout > .profile{grid-area:profile !important}
-  /* When profile is inside md-bio, stack content then profile */
-  #about .md-view .md-bio{grid-template-columns:1fr;row-gap:.8rem}
-.profile{float:none;margin:1rem auto;padding:8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;box-sizing:border-box;width:auto;border:0;background:transparent;box-shadow:none;border-radius:0}
-#about .md-view .md-bio{max-width:none;padding-right:0}
-
-  /* Drive image size by the inner card width on mobile */
-  .profile-inner{width:clamp(260px, 74vw, 320px)}
-  .profile img{width:100%;max-width:100%;aspect-ratio:1/1;height:auto}
+/* --- Papers --------------------------------------------------------------- */
+.pub-links{display:flex;flex-wrap:wrap;gap:.4rem .75rem;font:14px var(--font-mono);color:var(--faint)}
+.pubs{list-style:none;margin:0;padding:0}
+.pub{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:1rem;padding:.8rem 0;border-top:1px solid var(--line-soft)}
+.pub:first-child{border-top:0;padding-top:.2rem}
+.pub-date{font:500 13px/2 var(--font-mono);color:var(--warm);white-space:nowrap}
+.pub-title{display:block;color:var(--strong);font-weight:600;line-height:1.45;text-decoration:none}
+a.pub-title:hover{color:var(--accent);text-decoration:underline}
+.pub-authors{margin-top:.3rem;font-size:.9em;line-height:1.55;color:var(--muted)}
+.pub-authors .me{color:var(--strong);font-weight:600}
+.pub-authors .au.is-hidden{display:none}
+.authors-more{
+  margin-left:.35rem;padding:0 .4rem;border:1px solid var(--line);border-radius:4px;
+  background:transparent;color:var(--accent);font:12px/1.6 var(--font-mono);cursor:pointer;
 }
-@media (max-width: 600px){
-  /* On very small phones, allow a bit more width (still within viewport) */
-  :root{ --outer-gap-scale: 0.45; } /* much smaller top/bottom outer space on phones */
-  .profile-inner{width:min(80vw, 320px)}
-  .profile img{width:100%;max-width:100%;aspect-ratio:1/1;height:auto}
+.authors-more:hover{border-color:var(--accent)}
+.pub-venue{margin-top:.15rem;font:13px var(--font-mono);color:var(--muted)}
 
-  /* Slightly more top breathing room for profile on phones */
-  #about .md-view .md-bio .profile{margin-top:8px}
-  #about .md-view .md-bio .profile img{margin-top:8px}
+/* --- Projects ------------------------------------------------------------- */
+.figure{margin:1.4rem 0 .6rem}
+.figure a{display:block;max-width:620px}
+.figure-wide a{max-width:none}
+.figure img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);background:#fff}
+.figure em{display:block;margin-top:.5rem;font:normal 13px var(--font-mono);color:var(--muted)}
 
-  /* Window controls remain in a row on phones */
-  .window-controls{flex-direction:row;align-items:center}
-
-  /* Place theme toggle inline with page H1 on phones */
-  .md-view .md-h1{display:flex;align-items:center}
-  .md-view .md-h1 .theme-toggle{position:static;width:32px;height:32px;margin-left:auto;border-radius:8px}
-
-  /* Larger tap targets for icons */
-  .icon-btn{width:42px;height:42px;border-radius:10px}
-
-  /* Typography scale tweak for compact screens */
-  .md-view{font-size:17px;line-height:1.58}
-  .md-h1{font-size:1.36rem}
-  .md-h2{font-size:1.12rem}
-
-  /* Reduce outer margins slightly */
-  .ide-window{margin:0 auto}
-
-  /* Pong: edge-to-edge on mobile */
-  .pong-overlay{padding:0}
-  .pong-wrap{box-shadow:none;border:0;border-radius:0}
-  .pong-wrap canvas{border-radius:0}
+/* --- Source view (markdown with line numbers) ----------------------------- */
+.source{
+  margin:0;padding:18px 0 64px;
+  font:13.5px/1.7 var(--font-mono);
+  color:var(--text);
+  counter-reset:ln;
 }
+.source code{display:block;font:inherit}
+.src-line{display:grid;grid-template-columns:4.25rem minmax(0,1fr);padding-right:24px;cursor:text}
+.src-line::before{
+  counter-increment:ln;content:counter(ln);
+  padding-right:1.6rem;text-align:right;color:var(--faint);user-select:none;
+}
+.src-line > span{white-space:pre-wrap;overflow-wrap:anywhere;min-height:1.7em}
+.src-line.is-current{background:var(--line-soft)}
+.src-line.is-current::before{color:var(--text)}
+.tk-h{color:var(--strong);font-weight:600}
+.tk-mark{color:var(--warm)}
+.tk-strong{color:var(--warm);font-weight:600}
+.tk-em{font-style:italic;color:var(--strong)}
+.tk-link{color:var(--accent)}
+.tk-url,.tk-attr{color:var(--muted)}
+.tk-url{text-decoration:underline;text-decoration-color:var(--line)}
 
-/* Links inside buffers — duplicate block (keep consistent) */
-.buffer a{color:var(--accent)}
-.buffer a:visited{color:var(--accent)}
-
-/* Pong overlay */
-.pong-overlay{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:2000;padding:12px}
-.pong-overlay.show{display:flex}
-.pong-wrap{position:relative;box-shadow:0 6px 24px rgba(0,0,0,.35);border:1px solid var(--border);border-radius:10px;background:var(--panel)}
-.pong-wrap canvas{display:block;background:var(--panel-2);border-radius:10px}
-/* Return button removed; end message is drawn on canvas */
-
+/* --- Statusbar ------------------------------------------------------------ */
 .statusbar{
-  display:flex;gap:.75rem;align-items:center;padding:.35rem .6rem;border-top:1px solid var(--border);background:var(--panel);color:var(--muted)
+  display:flex;align-items:stretch;
+  background:var(--chrome);border-top:1px solid var(--line);
+  font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;
 }
-/* Light mode: make footer match page background */
-:root[data-theme="light"] .statusbar{background:var(--bg)}
-.statusbar .spacer{flex:1}
+.sb-item{display:flex;align-items:center;gap:6px;padding:0 10px;border:0;background:none;text-decoration:none;color:inherit}
+a.sb-item:hover,button.sb-item:hover{background:var(--chrome-hover);color:var(--strong);cursor:pointer}
+.sb-item svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sb-branch{background:var(--accent);color:var(--on-accent);font-weight:500}
+a.sb-branch:hover{background:color-mix(in srgb, var(--accent) 85%, var(--strong));color:var(--on-accent)}
+.sb-spacer{flex:1}
+kbd{font:11px var(--font-mono);padding:0 5px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;color:var(--text);background:var(--editor)}
 
+/* --- Command palette ------------------------------------------------------ */
+.palette{position:fixed;inset:0;z-index:50;background:color-mix(in srgb, var(--desk) 45%, transparent);display:flex;justify-content:center;align-items:flex-start;padding-top:min(14vh,120px)}
+.palette-box{
+  width:min(620px, calc(100vw - 32px));
+  background:var(--chrome);border:1px solid var(--line);border-radius:10px;
+  box-shadow:0 24px 60px var(--shadow);overflow:hidden;
+}
+#palette-input{
+  display:block;width:calc(100% - 16px);margin:8px;padding:8px 10px;
+  font:14px var(--font-mono);color:var(--strong);
+  background:var(--editor);border:1px solid var(--accent);border-radius:6px;outline:none;
+}
+.palette-list{list-style:none;margin:0;padding:0 0 6px;max-height:min(50vh,360px);overflow-y:auto}
+.palette-list li{display:flex;align-items:center;gap:10px;padding:6px 16px;font-size:13px;color:var(--text);cursor:pointer}
+.palette-list li .pl-detail{margin-left:auto;color:var(--muted);font-size:12px}
+.palette-list li .pl-key{margin-left:auto}
+.palette-list li .pl-key + .pl-detail{margin-left:8px}
+.palette-list li[aria-selected="true"]{background:var(--accent-soft);color:var(--strong)}
+.palette-list mark{background:none;color:var(--accent);font-weight:600}
+.palette-list .pl-empty{color:var(--muted);cursor:default}
+
+/* --- Pong ----------------------------------------------------------------- */
+.pong{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:var(--gap);background:var(--desk)}
+.pong-bar{display:flex;align-items:center;gap:12px;width:var(--pong-w, 800px);max-width:100%;font-size:13px;color:var(--muted)}
+.pong-title{color:var(--strong);font-weight:600}
+.pong-hint{margin-right:auto}
+.pong canvas{display:block;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 24px 70px var(--shadow);touch-action:none}
+
+/* --- Responsive ----------------------------------------------------------- */
+/* Below 1100px the explorer becomes a drawer over the document */
+@media (max-width: 1099px){
+  html:not(.js) .sidebar{display:none}
+  .sidebar{position:absolute;inset:0 auto 0 0;z-index:5;width:min(var(--sidebar-w), 85%);box-shadow:12px 0 32px var(--shadow)}
+  .sidebar-scrim{display:block;position:absolute;inset:0;z-index:4;background:color-mix(in srgb, var(--desk) 35%, transparent)}
+  .sidebar-closed .sidebar-scrim{display:none}
+}
+@media (max-width: 760px){
+  :root{--titlebar-h:44px}
+  body{padding:0}
+  .window,.window.is-minimized{width:100%;height:100%;border:0;border-radius:0;box-shadow:none}
+  .window.is-minimized{height:var(--titlebar-h)}
+  .wc-min,.wc-max{display:none}
+  .window-controls{margin-left:0;padding-left:0;border-left:0}
+  .tab{padding:0 12px 0 10px}
+  .breadcrumbs li:first-child{display:none}
+  .breadcrumbs li + li::before{display:none}
+  .sb-optional,.sb-palette kbd{display:none}
+
+  .preview{font-size:16px}
+  .preview h1{font-size:1.45rem}
+  .preview h2{font-size:1.08rem;margin-top:2rem}
+  .preview.about{grid-template-columns:minmax(0,1fr);grid-template-areas:"intro" "profile" "cv"}
+  .profile{justify-self:center;width:min(240px, 72vw);padding:0 0 .6rem}
+  .contact{width:42px;height:42px}
+  .pub{grid-template-columns:minmax(0,1fr);gap:.1rem}
+  .pub-date{line-height:1.6}
+  .src-line{grid-template-columns:2.75rem minmax(0,1fr);padding-right:12px}
+  .src-line::before{padding-right:.9rem}
+  .pong{padding:0;gap:0}
+  .pong-bar{padding:8px 10px}
+  .pong-hint{font-size:11px}
+  .pong canvas{border:0;border-radius:0;box-shadow:none}
+}
+@media (prefers-reduced-motion: no-preference){
+  .tab,.tree-item,.icon-button,.contact,.sb-item{transition:background-color .12s, color .12s, border-color .12s}
+}
+@media print{
+  body{display:block;padding:0;overflow:visible;background:#fff}
+  .window{display:block;height:auto;border:0;box-shadow:none}
+  .titlebar,.sidebar,.editor-bar,.statusbar{display:none}
+  .editor-scroll{overflow:visible}
+  .js .buffer:not(.is-active){display:block}
+  .source{display:none}
+}
