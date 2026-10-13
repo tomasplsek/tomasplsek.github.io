@@ -1,6 +1,6 @@
 
 ## Education
-- **09/2021–06/2026** — PhD, *Understanding the physics of hot galactic atmospheres* (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
+- **09/2021–06/2026** — PhD, *[Investigating the physics of hot galactic atmospheres](https://is.muni.cz/th/opist/?lang=en)* (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
 - **09/2019–06/2021** — MSc, *Relation between Bondi accretion and jets powers in giant elliptical galaxies* (supervisor: Norbert Werner), DTPA, Faculty of Science, Masaryk University
 - **09/2016–06/2019** — BSc, *Dark matter modelling of clusters of galaxies* (supervisor: Filip Hroch), DTPA, Faculty of Science, Masaryk University
 

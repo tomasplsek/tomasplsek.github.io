@@ -22,6 +22,11 @@
 
 - section: Contributions
   papers:
+    - date: Jul 2026
+      title: "IceCube AGN neutrino source candidate PKS 2233−148: peculiar observed properties & possible gravitational lensing signatures"
+      url: https://doi.org/10.1093/mnras/stag1355
+      authors: [Britzen S., Kovačević A. B., Popović L. Č., Kun E., Zajaček M., Jaron F., Plšek T., Pashchenko I. N., Pánis R., Stuchlík Z., Tursunov A.]
+      venue: MNRAS 552, stag1355
     - date: Feb 2026
       title: "X-ray line diagnostics of the multi-phase gas in the Centaurus cluster core with XRISM/Resolve"
       url: https://arxiv.org/abs/2602.12814
