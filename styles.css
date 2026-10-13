@@ -48,7 +48,7 @@
   --font-prose: var(--font-sans);
 
   --gap: clamp(12px, 3.2vmin, 40px);  /* space either side of the window */
-  --gap-y: 10vh;                       /* space above and below: the window is 80% tall */
+  --gap-y: 7vh;                        /* space above and below: the window is 86% tall */
   --titlebar-h: 42px;
   --statusbar-h: 26px;
   --sidebar-w: 248px;
