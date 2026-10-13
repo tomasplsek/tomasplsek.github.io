@@ -48,6 +48,7 @@
   --font-prose: var(--font-sans);
 
   --gap: clamp(12px, 3.2vmin, 40px);  /* space either side of the window */
+  --gap-y: 10vh;                       /* space above and below: the window is 80% tall */
   --titlebar-h: 42px;
   --statusbar-h: 26px;
   --sidebar-w: 248px;
@@ -64,7 +65,7 @@ body{
   margin:0;
   display:grid;
   grid-template:minmax(0,1fr) / minmax(0,1fr);   /* tracks never grow past the viewport */
-  padding:0 var(--gap);              /* the window runs full height, centred */
+  padding:var(--gap-y) var(--gap);
   background:
     radial-gradient(1100px 520px at 50% -12%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 70%),
     var(--desk);
@@ -100,14 +101,15 @@ html:not(.js) .js-only{display:none !important}
   grid-template-rows:var(--titlebar-h) minmax(0,1fr) var(--statusbar-h);
   grid-template-columns:minmax(0,1fr);   /* the tab strip scrolls instead of widening the window */
   background:var(--editor);
-  border-inline:1px solid var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
   box-shadow:0 24px 70px var(--shadow), 0 2px 6px var(--shadow);
   overflow:hidden;
 }
 /* place-self:stretch, or the fixed box would shrink to fit its content */
-.window.is-maximized{position:fixed;inset:0;place-self:stretch;width:auto;height:auto;border:0;z-index:10}
+.window.is-maximized{position:fixed;inset:0;place-self:stretch;width:auto;height:auto;border-radius:0;border:0;z-index:10}
 /* Minimised: collapse to the titlebar and drop to the bottom, like a docked window */
-.window.is-minimized{height:var(--titlebar-h);grid-template-rows:var(--titlebar-h);place-self:end center;width:min(560px,100%);border:1px solid var(--line);border-bottom:0;border-radius:var(--radius) var(--radius) 0 0}
+.window.is-minimized{height:var(--titlebar-h);grid-template-rows:var(--titlebar-h);place-self:end center;width:min(560px,100%)}
 .window.is-minimized .workspace,.window.is-minimized .statusbar{display:none}
 .window.is-closed{visibility:hidden}
 
